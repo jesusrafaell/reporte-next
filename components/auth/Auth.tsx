@@ -26,19 +26,9 @@ export default function Auth({ children }: Props) {
 
 	const router = useRouter();
 
-	const name: string = router.pathname === '/auth/login' ? 'Iniciar Sesión' : 'Registrarme';
+	const name: string = router.pathname === '/auth/login' ? 'Iniciar Sesión' : 'Registro';
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		// eslint-disable-next-line no-console
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
-	};
 
 	return (
 		<Container component='main' maxWidth='xs'>
@@ -56,12 +46,7 @@ export default function Auth({ children }: Props) {
 				<Typography component='h1' variant='h5'>
 					{name}
 				</Typography>
-				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-					{children}
-					<Button type='submit' fullWidth variant='contained' className={classes.button} sx={{ mt: 3, mb: 2 }}>
-						{name}
-					</Button>
-				</Box>
+				{children}
 			</Box>
 		</Container>
 	);

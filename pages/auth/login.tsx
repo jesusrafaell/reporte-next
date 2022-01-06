@@ -5,19 +5,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '../../styles/auth/styles';
 import Layout from '../../components/layout/Layout';
 
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Auth from '../../components/auth/Auth';
 
 //import AuthModal from '../../components/modals/authModal';
@@ -44,7 +34,7 @@ export default function Login() {
 	return (
 		<Layout>
 			<Auth>
-				<>
+				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						margin='normal'
 						required
@@ -77,7 +67,10 @@ export default function Login() {
 							),
 						}}
 					/>
-				</>
+					<Button type='submit' fullWidth variant='contained' className={classes.button} sx={{ mt: 3, mb: 2 }}>
+						{name}
+					</Button>
+				</Box>
 			</Auth>
 		</Layout>
 	);
