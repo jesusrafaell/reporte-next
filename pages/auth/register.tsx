@@ -8,10 +8,9 @@ import Layout from '../../components/layout/Layout';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Auth from '../../components/auth/Auth';
-
-//import AuthModal from '../../components/modals/authModal';
+import { registerValidEmail, registerValidPass, registerValidSamePass } from '../../validation/auth';
+import { useState } from 'react';
 
 const theme = createTheme();
 
@@ -20,16 +19,51 @@ export default function Register() {
 
 	const name: string = 'Registrarme';
 
-	const [showPassword, setShowPassword] = React.useState<boolean>(false);
+	const [showPassword, setShowPassword] = useState<boolean>(false);
+
+	const [errorForm, setErrorForm] = useState<any>({
+		email: false,
+		password: {
+			rango: false,
+			mayus: false,
+			minus: false,
+			sig: false,
+			samePass: false,
+		},
+		ident_type: false,
+		ident_num: false,
+	});
+
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		// eslint-disable-next-line no-console
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-			confirm_password: data.get('password2'),
+
+		//Validar Register
+		setErrorForm((prev: any) => {
+			return {
+				email: registerValidEmail(data.get('email') as string),
+				password: registerValidPass(data.get('password') as string, data.get('password2') as string),
+				ident_type: false,
+				ident_num: false,
+			};
 		});
+
+		const valid: boolean = Object.keys(errorForm).find((res) => {
+			if (typeof errorForm[res] === 'object') {
+				return Object.keys(errorForm[res]).find((item) => {
+					if (errorForm[res][item]) return true;
+				});
+			}
+			if (errorForm[res]) return true;
+		})
+			? true
+			: false;
+
+		if (valid) return;
+
+		//Endpoint
+		console.log('send Fm');
+		// eslint-disable-next-line no-console
 	};
 
 	return (
@@ -54,7 +88,7 @@ export default function Register() {
 						label='C.I'
 						placeholder='1234567'
 						name='identNum'
-						autoComplete='email'
+						autoComplete='text'
 						autoFocus
 						InputProps={{
 							startAdornment: (
@@ -66,11 +100,12 @@ export default function Register() {
 												marginBottom: '-.10px',
 											}}
 											//onChange={changeFmData}
-											name='doc_ident_type_ref1'
+											name='identType'
 											//value={fmData.doc_ident_type_ref1}
+											defaultValue={'J'}
 											label='Tipo'>
-											<MenuItem value='V'>V</MenuItem>
 											<MenuItem value='J'>J</MenuItem>
+											<MenuItem value='V'>V</MenuItem>
 											<MenuItem value='P'>P</MenuItem>
 										</Select>
 									</FormControl>
@@ -105,7 +140,7 @@ export default function Register() {
 						margin='normal'
 						required
 						fullWidth
-						name='password'
+						name='password2'
 						label='Confirmar Contraseña'
 						type='password'
 						id='password2'

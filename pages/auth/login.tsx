@@ -10,8 +10,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Auth from '../../components/auth/Auth';
 
-//import AuthModal from '../../components/modals/authModal';
-
 const theme = createTheme();
 
 export default function Login() {

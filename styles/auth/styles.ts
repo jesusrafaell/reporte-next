@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((styles: Theme) => ({
 	button: {
-		background: '#006368',
+		background: styles.palette.primary.main,
 		textTransform: 'none',
 		'&:hover': {
 			backgroundColor: styles.palette.primary.light,

@@ -28,7 +28,7 @@ const pages = [
 const settings = ['Perfil', 'Cerrar sesión'];
 
 export default function NavBar() {
-	const name = 'BVC';
+	const name = 'Tranred';
 
 	const classes = useStylesNav();
 

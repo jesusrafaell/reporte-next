@@ -11,8 +11,11 @@ import Head from 'next/head';
 const theme = createTheme({
 	palette: {
 		primary: {
-			main: '#006368',
+			main: '#2f3775',
 			contrastText: '#ffffff',
+		},
+		secondary: {
+			main: '#dff2ff',
 		},
 	},
 });
