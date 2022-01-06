@@ -1,0 +1,22 @@
+{
+	"type": "mssql",
+	"host": "10.198.72.31",
+	"username": "amendoza",
+	"password": "Am1523246.",
+	"database": "tranredconsulta",
+	"options": {
+		"trustServerCertificate": true
+	},
+	"requestTimeout": 30000000,
+	"connectionTimeout": 30000,
+	"synchronize": false,
+	"logging": false,
+	"entities": ["server/models/**/*.ts"],
+	"migrations": ["server/base/**/*.ts"],
+	"subscribers": ["server/subscriber/**/*.ts"],
+	"cli": {
+		"entitiesDir": "server/models",
+		"migrationsDir": "server/base",
+		"subscribersDir": "server/subscriber"
+	}
+}
