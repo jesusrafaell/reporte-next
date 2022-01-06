@@ -71,7 +71,7 @@ export default function Register() {
 						name='password'
 						label='Confirmar Contraseña'
 						type='password'
-						id='password'
+						id='password2'
 						autoComplete='current-password'
 					/>
 				</>

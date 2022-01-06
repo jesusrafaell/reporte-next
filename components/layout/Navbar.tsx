@@ -91,10 +91,14 @@ export default function NavBar() {
 							sx={{
 								display: { xs: 'block', md: 'none' },
 							}}>
-							{pages.map((page) => (
-								<Link href={page.path}>
-									<MenuItem key={page.name} onClick={handleCloseNavMenu}>
-										<Typography textAlign='center'>{page.name}</Typography>
+								<Link href={pages[0].path}>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography textAlign='center'>{pages[0].name}</Typography>
+									</MenuItem>
+								</Link>
+								<Link href={pages[1].path}>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography textAlign='center'>{pages[1].name}</Typography>
 									</MenuItem>
 								</Link>
 							))}
@@ -108,16 +112,20 @@ export default function NavBar() {
 						{name}
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						{pages.map((page) => (
-							<Link href={page.path}>
-								<Button
-									key={page.name}
-									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}>
-									<Typography textAlign='center'>{page.name}</Typography>
-								</Button>
-							</Link>
-						))}
+						<Link href={pages[0].path}>
+							<Button
+								onClick={handleCloseNavMenu}
+								sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}>
+								<Typography textAlign='center'>{pages[0].name}</Typography>
+							</Button>
+						</Link>
+						<Link href={pages[1].path}>
+							<Button
+								onClick={handleCloseNavMenu}
+								sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}>
+								<Typography textAlign='center'>{pages[1].name}</Typography>
+							</Button>
+						</Link>
 					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
