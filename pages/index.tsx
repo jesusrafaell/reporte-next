@@ -1,19 +1,22 @@
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
-//import { useEffect } from 'react';
+import Router from 'next/router';
+import { useEffect, useState } from 'react';
 import Layout from '../components/layout/Layout';
 
 const Home: NextPage = () => {
-	const router = useRouter();
-
-	/*
+	const [loaded, setLoaded] = useState<boolean>(false);
 	useEffect(() => {
-		console.log(router.pathname);
-		if (router.pathname == '/') {
-			router.push('/auth/register');
+		const { pathname } = Router;
+		if (pathname == '/') {
+			Router.push('/auth/login');
+		} else {
+			setLoaded(true);
 		}
-	});
-	*/
+	}, []);
+
+	if (!loaded) {
+		return <div>Cargando...</div>;
+	}
 
 	return (
 		<Layout>

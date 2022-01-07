@@ -35,7 +35,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<CacheProvider value={cache}>
 			<Head>
 				<title>Reporte BCV</title>
-				<link rel='shortcut icon' href='/bvc.ico' />
+				<link rel='shortcut icon' href='/icon.png' />
+				{/*<link rel='manifest' href='/manifest.json' /> */}
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Component {...pageProps} />;

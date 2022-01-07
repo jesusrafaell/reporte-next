@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Auth from '../../components/auth/Auth';
+import axios from 'axios';
 
 const theme = createTheme();
 
@@ -19,14 +20,28 @@ export default function Login() {
 
 	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const login = async () => {
+		try {
+			const response = await fetch('/api/login', {
+				method: 'GET',
+			});
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
+		await login();
 		// eslint-disable-next-line no-console
+		/*
 		console.log({
 			email: data.get('email'),
 			password: data.get('password'),
 		});
+		*/
 	};
 
 	return (

@@ -11,12 +11,12 @@
 	"connectionTimeout": 30000,
 	"synchronize": false,
 	"logging": false,
-	"entities": ["server/models/**/*.ts"],
-	"migrations": ["server/base/**/*.ts"],
-	"subscribers": ["server/subscriber/**/*.ts"],
+	"entities": ["entities/**/*.ts"],
+	"migrations": ["base/**/*.ts"],
+	"subscribers": ["/subscriber/**/*.ts"],
 	"cli": {
-		"entitiesDir": "server/models",
-		"migrationsDir": "server/base",
-		"subscribersDir": "server/subscriber"
+		"entitiesDir": "entities",
+		"migrationsDir": "base",
+		"subscribersDir": "subscriber"
 	}
 }
