@@ -54,7 +54,7 @@ export default function NavBar() {
 		<AppBar position='static'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<Link href='/'>
+					<Link href='/' passHref>
 						<Typography
 							variant='h6'
 							noWrap
@@ -91,17 +91,16 @@ export default function NavBar() {
 							sx={{
 								display: { xs: 'block', md: 'none' },
 							}}>
-								<Link href={pages[0].path}>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Typography textAlign='center'>{pages[0].name}</Typography>
-									</MenuItem>
-								</Link>
-								<Link href={pages[1].path}>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Typography textAlign='center'>{pages[1].name}</Typography>
-									</MenuItem>
-								</Link>
-							))}
+							<Link href={pages[0].path} passHref>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<Typography textAlign='center'>{pages[0].name}</Typography>
+								</MenuItem>
+							</Link>
+							<Link href={pages[1].path} passHref>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<Typography textAlign='center'>{pages[1].name}</Typography>
+								</MenuItem>
+							</Link>
 						</Menu>
 					</Box>
 					<Typography
@@ -112,14 +111,14 @@ export default function NavBar() {
 						{name}
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						<Link href={pages[0].path}>
+						<Link href={pages[0].path} passHref>
 							<Button
 								onClick={handleCloseNavMenu}
 								sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}>
 								<Typography textAlign='center'>{pages[0].name}</Typography>
 							</Button>
 						</Link>
-						<Link href={pages[1].path}>
+						<Link href={pages[1].path} passHref>
 							<Button
 								onClick={handleCloseNavMenu}
 								sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}>

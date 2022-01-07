@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import createCache from '@emotion/cache';
 import Head from 'next/head';
-//import { useEffect } from 'react';
+import { useEffect } from 'react';
 
 const theme = createTheme({
 	palette: {
@@ -23,15 +23,13 @@ const theme = createTheme({
 export const cache = createCache({ key: 'css', prepend: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
-	/*
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
 		if (jssStyles) {
-			jssStyles.parentElement.removeChild(jssStyles);
+			jssStyles.parentElement?.removeChild(jssStyles);
 		}
 	}, []);
-	*/
 
 	return (
 		<CacheProvider value={cache}>

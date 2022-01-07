@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Auth from '../../components/auth/Auth';
-import { registerValidEmail, registerValidPass, registerValidSamePass } from '../../validation/auth';
+import { registerValidEmail, registerValidPass } from '../../validation/auth';
 import { useState } from 'react';
 
 const theme = createTheme();

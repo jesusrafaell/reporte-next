@@ -1,14 +1,11 @@
 //import { Theme } from '@mui/material/styles';
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '../../styles/auth/styles';
-
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
