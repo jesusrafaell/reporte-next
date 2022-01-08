@@ -3,9 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default (req: NextApiRequest, res: NextApiResponse) => {
 	//const { query } = req.body as { query: string };
 	if (req.method === 'GET') {
-		console.log('form back->', req.method);
-	} else if (req.method === 'GET') {
-		console.log('form back->', req.method);
+		console.log('login back->', req.method);
+	} else if (req.method === 'POST') {
+		console.log('login back->', req.method);
 	}
 	res.send('Hello world!');
 };

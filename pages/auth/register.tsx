@@ -34,20 +34,41 @@ export default function Register() {
 		ident_num: false,
 	});
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const register = async (user: any) => {
+		try {
+			const res = await fetch('/api/register', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(user),
+			});
+			return res.json();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-
+		const user = {
+			email: data.get('email') as string,
+			password: data.get('password') as string,
+			ident_type: data.get('identType') as string,
+			ident_num: data.get('identNum') as string,
+		};
 		//Validar Register
 		setErrorForm((prev: any) => {
 			return {
-				email: registerValidEmail(data.get('email') as string),
-				password: registerValidPass(data.get('password') as string, data.get('password2') as string),
+				email: registerValidEmail(user.email),
+				password: registerValidPass(user.password, data.get('password2') as string),
 				ident_type: false,
 				ident_num: false,
 			};
 		});
 
+		/*
 		const valid: boolean = Object.keys(errorForm).find((res) => {
 			if (typeof errorForm[res] === 'object') {
 				return Object.keys(errorForm[res]).find((item) => {
@@ -58,11 +79,25 @@ export default function Register() {
 		})
 			? true
 			: false;
-
-		if (valid) return;
+		*/
+		const validPass = (data: any) => {
+			return Object.keys(data).find((item) => {
+				if (data[item]) return true;
+			})
+				? true
+				: false;
+		};
+		if (
+			registerValidEmail(user.email) ||
+			validPass(registerValidPass(user.password, data.get('password2') as string))
+		) {
+			return;
+		}
 
 		//Endpoint
-		console.log('send Fm');
+		await register(user).then((data) => {
+			console.log(data);
+		});
 		// eslint-disable-next-line no-console
 	};
 
@@ -79,6 +114,7 @@ export default function Register() {
 						name='email'
 						autoComplete='email'
 						autoFocus
+						error={errorForm.email}
 					/>
 					<TextField
 						margin='normal'
@@ -122,6 +158,12 @@ export default function Register() {
 						id='password'
 						autoComplete='current-password'
 						type={showPassword ? 'text' : 'password'}
+						error={
+							errorForm.password.rango ||
+							errorForm.password.mayus ||
+							errorForm.password.minus ||
+							errorForm.password.sig
+						}
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position='end'>
@@ -145,6 +187,7 @@ export default function Register() {
 						type='password'
 						id='password2'
 						autoComplete='current-password'
+						error={errorForm.password.samePass}
 					/>
 					<Button type='submit' fullWidth variant='contained' className={classes.button} sx={{ mt: 3, mb: 2 }}>
 						{name}
