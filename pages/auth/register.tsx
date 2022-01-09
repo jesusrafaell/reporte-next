@@ -43,7 +43,7 @@ export default function Register() {
 				body: JSON.stringify(user),
 			});
 			setButtonOn(false);
-			return res.json();
+			return await res.json();
 		} catch (error) {
 			setButtonOn(false);
 			console.log(error);
