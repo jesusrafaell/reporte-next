@@ -1,18 +1,15 @@
 import * as React from 'react';
-//import { Theme } from '@mui/material/styles';
 import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '../../styles/auth/styles';
 import Layout from '../../components/layout/Layout';
 
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Auth from '../../components/auth/Auth';
 import { registerValidEmail, registerValidPass } from '../../validation/auth';
 import { useState } from 'react';
-
-const theme = createTheme();
+import { errorFlagInt, FlagInt, UserInt } from './interfaces';
 
 export default function Register() {
 	const classes = useStyles();
@@ -20,8 +17,10 @@ export default function Register() {
 	const name: string = 'Registrarme';
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [buttonOn, setButtonOn] = useState<boolean>(false);
+	console.log(buttonOn);
 
-	const [errorForm, setErrorForm] = useState<any>({
+	const [errorForm, setErrorForm] = useState<errorFlagInt>({
 		email: false,
 		password: {
 			rango: false,
@@ -34,7 +33,7 @@ export default function Register() {
 		ident_num: false,
 	});
 
-	const register = async (user: any) => {
+	const register = async (user: UserInt) => {
 		try {
 			const res = await fetch('/api/register', {
 				method: 'POST',
@@ -43,29 +42,31 @@ export default function Register() {
 				},
 				body: JSON.stringify(user),
 			});
+			setButtonOn(false);
 			return res.json();
 		} catch (error) {
+			setButtonOn(false);
 			console.log(error);
 		}
 	};
 
-	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setButtonOn(true);
+		console.log('entre');
 		const data = new FormData(event.currentTarget);
-		const user = {
+		const user: UserInt = {
 			email: data.get('email') as string,
 			password: data.get('password') as string,
-			ident_type: data.get('identType') as string,
+			ident_type: parseInt(data.get('identType') as string, 10),
 			ident_num: data.get('identNum') as string,
 		};
 		//Validar Register
-		setErrorForm((prev: any) => {
-			return {
-				email: registerValidEmail(user.email),
-				password: registerValidPass(user.password, data.get('password2') as string),
-				ident_type: false,
-				ident_num: false,
-			};
+		setErrorForm({
+			email: registerValidEmail(user.email),
+			password: registerValidPass(user.password, data.get('password2') as string),
+			ident_type: false,
+			ident_num: false,
 		});
 
 		/*
@@ -80,22 +81,24 @@ export default function Register() {
 			? true
 			: false;
 		*/
-		const validPass = (data: any) => {
+		const validPass = (data: FlagInt) => {
 			return Object.keys(data).find((item) => {
 				if (data[item]) return true;
 			})
 				? true
 				: false;
 		};
+
 		if (
 			registerValidEmail(user.email) ||
 			validPass(registerValidPass(user.password, data.get('password2') as string))
 		) {
+			setButtonOn(false);
 			return;
 		}
 
 		//Endpoint
-		await register(user).then((data) => {
+		register(user).then((data) => {
 			console.log(data);
 		});
 		// eslint-disable-next-line no-console
@@ -138,11 +141,11 @@ export default function Register() {
 											//onChange={changeFmData}
 											name='identType'
 											//value={fmData.doc_ident_type_ref1}
-											defaultValue={'J'}
+											defaultValue={2}
 											label='Tipo'>
-											<MenuItem value='J'>J</MenuItem>
-											<MenuItem value='V'>V</MenuItem>
-											<MenuItem value='P'>P</MenuItem>
+											<MenuItem value={2}>J</MenuItem>
+											<MenuItem value={1}>V</MenuItem>
+											<MenuItem value={3}>P</MenuItem>
 										</Select>
 									</FormControl>
 								</InputAdornment>
@@ -189,7 +192,13 @@ export default function Register() {
 						autoComplete='current-password'
 						error={errorForm.password.samePass}
 					/>
-					<Button type='submit' fullWidth variant='contained' className={classes.button} sx={{ mt: 3, mb: 2 }}>
+					<Button
+						type='submit'
+						fullWidth
+						variant='contained'
+						disabled={buttonOn}
+						className={classes.button}
+						sx={{ mt: 3, mb: 2 }}>
 						{name}
 					</Button>
 				</Box>

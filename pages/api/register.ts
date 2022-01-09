@@ -10,7 +10,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 		console.log('Register ->', req.method, user);
 		message = 'Register Pos';
 	}
-	return res.status(200).json({
-		message: message,
-	});
+	setTimeout(() => {
+		return res.status(200).json({
+			message: message,
+		});
+	}, 500);
 };

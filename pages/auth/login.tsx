@@ -31,17 +31,11 @@ export default function Login() {
 		}
 	};
 
-	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		await login();
+		login();
 		// eslint-disable-next-line no-console
-		/*
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
-		*/
 	};
 
 	return (
