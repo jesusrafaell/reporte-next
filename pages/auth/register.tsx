@@ -3,6 +3,7 @@ import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, Text
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '@/styles/auth/styles';
 import Layout from '@/components/layout/Layout';
+import axios from 'axios';
 
 import Box from '@mui/material/Box';
 
@@ -43,10 +44,17 @@ export default function Register() {
 				body: JSON.stringify(user),
 			});
 			setButtonOn(false);
-			return await res.json();
-		} catch (error) {
+			if (res.ok) return await res.json();
+			else throw await res.json();
+		} catch (err: any) {
 			setButtonOn(false);
-			console.log(error);
+			const resError = {
+				type: 'Error',
+				message: err.message || 'Error in Api',
+				code: err.code || '',
+			};
+			console.log(resError);
+			return resError;
 		}
 	};
 
@@ -93,7 +101,7 @@ export default function Register() {
 
 		//Endpoint
 		register(user).then((data) => {
-			console.log(data);
+			console.log('res', data);
 		});
 		// eslint-disable-next-line no-console
 	};

@@ -7,3 +7,16 @@ export const validArrayBooelan = (data: FlagInt) => {
 		? true
 		: false;
 };
+
+/*
+		const valid: boolean = Object.keys(errorForm).find((res) => {
+			if (typeof errorForm[res] === 'object') {
+				return Object.keys(errorForm[res]).find((item) => {
+					if (errorForm[res][item]) return true;
+				});
+			}
+			if (errorForm[res]) return true;
+		})
+			? true
+			: false;
+		*/

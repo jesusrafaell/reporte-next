@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+interface User {
+	email: string;
+}
+
 const useAuth = () => {
-	const [user, setUser] = useState<any>(null);
+	const [user, setUser] = useState<User | null>(null);
 	useEffect(() => {
 		//function getUser
 	}, []);
