@@ -1,18 +1,23 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { PrismaClient } from '@prisma/client';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-	const user = req.body;
-	let message = 'ok';
-	if (req.method === 'GET') {
-		console.log('Register ->', req.method);
-	} else if (req.method === 'POST') {
-		console.log('Register ->', req.method, user);
-		message = 'Register Pos';
+const prisma = new PrismaClient();
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+	if (req.method !== 'POST') {
+		return res.status(405).json({ message: 'Metodo invalido en Tranred' });
 	}
-	setTimeout(() => {
-		return res.status(200).json({
-			message: message,
-		});
-	}, 500);
+	let message = 'ok';
+	const user = req.body;
+
+	const saveUser = await prisma.user.create({
+		data: user,
+	});
+
+	message = 'Register Pos';
+	console.log('Register ->', req.method, user);
+
+	res.json(saveUser);
+	return res.status(200);
 };

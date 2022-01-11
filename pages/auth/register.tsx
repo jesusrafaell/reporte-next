@@ -58,8 +58,8 @@ export default function Register() {
 		const user: UserInt = {
 			email: data.get('email') as string,
 			password: data.get('password') as string,
-			ident_type: parseInt(data.get('identType') as string, 10),
-			ident_num: data.get('identNum') as string,
+			identTypeId: parseInt(data.get('identType') as string, 10),
+			identNum: data.get('identNum') as string,
 		};
 		//Validar Register
 		setErrorForm({
@@ -143,9 +143,13 @@ export default function Register() {
 											//value={fmData.doc_ident_type_ref1}
 											defaultValue={2}
 											label='Tipo'>
-											<MenuItem value={2}>J</MenuItem>
-											<MenuItem value={1}>V</MenuItem>
-											<MenuItem value={3}>P</MenuItem>
+											<MenuItem value={3}>J</MenuItem>
+											{/*
+													<MenuItem value={1}>V</MenuItem>
+													<MenuItem value={2}>E</MenuItem>
+													<MenuItem value={4}>R</MenuItem>
+													<MenuItem value={5}>P</MenuItem>
+											*/}
 										</Select>
 									</FormControl>
 								</InputAdornment>

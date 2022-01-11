@@ -12,6 +12,6 @@ export interface errorFlagInt {
 export interface UserInt {
 	email: string;
 	password: string;
-	ident_type: number;
-	ident_num: string;
+	identTypeId: number;
+	identNum: string;
 }
