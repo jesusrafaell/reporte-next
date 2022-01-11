@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useStyles } from '../../styles/auth/styles';
-import Layout from '../../components/layout/Layout';
+import { useStyles } from '@/styles/auth/styles';
+import Layout from '@/components/layout/Layout';
 
 import Box from '@mui/material/Box';
 
-import Auth from '../../components/auth/Auth';
-import { registerValidEmail, registerValidPass } from '../../validation/auth';
+import Auth from '@/components/auth/Auth';
+import { validEmail, validPass, validIdentNum } from '@/validation/auth';
 import { useState } from 'react';
 import { errorFlagInt, FlagInt, UserInt } from './interfaces';
+import { validArrayBooelan } from 'utilis/validBoolean';
 
 export default function Register() {
 	const classes = useStyles();
@@ -18,7 +19,6 @@ export default function Register() {
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [buttonOn, setButtonOn] = useState<boolean>(false);
-	console.log(buttonOn);
 
 	const [errorForm, setErrorForm] = useState<errorFlagInt>({
 		email: false,
@@ -29,8 +29,8 @@ export default function Register() {
 			sig: false,
 			samePass: false,
 		},
-		ident_type: false,
-		ident_num: false,
+		identType: false,
+		identNum: false,
 	});
 
 	const register = async (user: UserInt) => {
@@ -63,10 +63,10 @@ export default function Register() {
 		};
 		//Validar Register
 		setErrorForm({
-			email: registerValidEmail(user.email),
-			password: registerValidPass(user.password, data.get('password2') as string),
-			ident_type: false,
-			ident_num: false,
+			email: validEmail(user.email),
+			password: validPass(user.password, data.get('password2') as string),
+			identType: false,
+			identNum: validIdentNum(user.identNum),
 		});
 
 		/*
@@ -81,17 +81,11 @@ export default function Register() {
 			? true
 			: false;
 		*/
-		const validPass = (data: FlagInt) => {
-			return Object.keys(data).find((item) => {
-				if (data[item]) return true;
-			})
-				? true
-				: false;
-		};
 
 		if (
-			registerValidEmail(user.email) ||
-			validPass(registerValidPass(user.password, data.get('password2') as string))
+			validEmail(user.email) ||
+			validArrayBooelan(validPass(user.password, data.get('password2') as string)) ||
+			validIdentNum(user.identNum)
 		) {
 			setButtonOn(false);
 			return;
@@ -118,6 +112,7 @@ export default function Register() {
 						autoComplete='email'
 						autoFocus
 						error={errorForm.email}
+						helperText={errorForm.email && 'Email Invalido!'}
 					/>
 					<TextField
 						margin='normal'
@@ -129,6 +124,8 @@ export default function Register() {
 						name='identNum'
 						autoComplete='text'
 						autoFocus
+						error={errorForm.identNum}
+						helperText={errorForm.identNum && 'El numero de documento de identidad es invalido'}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position='start'>
@@ -141,9 +138,10 @@ export default function Register() {
 											//onChange={changeFmData}
 											name='identType'
 											//value={fmData.doc_ident_type_ref1}
-											defaultValue={2}
+											defaultValue={3}
 											label='Tipo'>
 											<MenuItem value={3}>J</MenuItem>
+											<MenuItem value={1}>V</MenuItem>
 											{/*
 													<MenuItem value={1}>V</MenuItem>
 													<MenuItem value={2}>E</MenuItem>
@@ -171,6 +169,13 @@ export default function Register() {
 							errorForm.password.minus ||
 							errorForm.password.sig
 						}
+						helperText={
+							(errorForm.password.rango ||
+								errorForm.password.mayus ||
+								errorForm.password.minus ||
+								errorForm.password.sig) &&
+							'La contraseña debe tener entre 8 a 12 caracters, al menos una MAYUSCULA, al menos 1 minuscula, al menos 1 carater (#,$,*,@,!...)'
+						}
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position='end'>
@@ -195,6 +200,7 @@ export default function Register() {
 						id='password2'
 						autoComplete='current-password'
 						error={errorForm.password.samePass}
+						helperText={errorForm.password.samePass && 'Las contraseñas deben ser iguales'}
 					/>
 					<Button
 						type='submit'

@@ -5,8 +5,8 @@ export interface FlagInt {
 export interface errorFlagInt {
 	email: boolean;
 	password: FlagInt;
-	ident_type: boolean;
-	ident_num: boolean;
+	identType: boolean;
+	identNum: boolean;
 }
 
 export interface UserInt {

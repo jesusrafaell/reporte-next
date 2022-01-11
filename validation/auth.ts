@@ -1,4 +1,4 @@
-export const registerValidPass = (password: string, password2: string) => {
+export const validPass = (password: string, password2: string) => {
 	let errorPass = {
 		rango: false,
 		mayus: false,
@@ -24,11 +24,13 @@ export const registerValidPass = (password: string, password2: string) => {
 	return errorPass;
 };
 
-export const registerValidEmail = (email: string): boolean => {
+export const validEmail = (email: string): boolean => {
 	const validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(email as string);
-	if (!validatedEmail) {
-		return true;
-	} else {
-		return false;
-	}
+	if (!validatedEmail) return true;
+	else return false;
+};
+
+export const validIdentNum = (value: string): boolean => {
+	if (value.length > 6 && /^([0-9])+$/.test(value)) return false;
+	else return true;
 };

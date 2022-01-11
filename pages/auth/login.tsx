@@ -2,13 +2,13 @@ import * as React from 'react';
 //import { Theme } from '@mui/material/styles';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useStyles } from '../../styles/auth/styles';
-import Layout from '../../components/layout/Layout';
+import { useStyles } from '@/styles/auth/styles';
+import Layout from '@/components/layout/Layout';
+import Auth from '@/components/auth/Auth';
 
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import Auth from '../../components/auth/Auth';
 import axios from 'axios';
 
 const theme = createTheme();

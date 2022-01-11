@@ -1,5 +1,4 @@
 //import { Theme } from '@mui/material/styles';
-import { useStyles } from '../../styles/auth/styles';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -11,6 +10,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { ReactChild, ReactChildren, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useStyles } from '@/styles/auth/styles';
 
 const theme = createTheme();
 

@@ -2,7 +2,7 @@ import { Box, LinearProgress } from '@mui/material';
 import type { NextPage } from 'next';
 import Router from 'next/router';
 import { useEffect, useState } from 'react';
-import Layout from '../components/layout/Layout';
+import Layout from '@/components/layout/Layout';
 
 const Home: NextPage = () => {
 	const [loaded, setLoaded] = useState<boolean>(false);

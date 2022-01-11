@@ -1,23 +1,39 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import { UserInt } from 'pages/auth/interfaces';
 
 const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== 'POST') {
-		return res.status(405).json({ message: 'Metodo invalido en Tranred' });
+		//return res.status(400).json({ message: 'Metodo invalido en Tranred' });
+		return res.redirect(302, '/');
 	}
-	let message = 'ok';
-	const user = req.body;
+	try {
+		// hash password
+		const salt: string = await bcrypt.genSalt(10);
+		req.body.password = await bcrypt.hash(req.body.password, salt);
 
-	const saveUser = await prisma.user.create({
-		data: user,
-	});
+		const user: UserInt = req.body;
 
-	message = 'Register Pos';
-	console.log('Register ->', req.method, user);
+		const saveUser = await prisma.user.create({
+			data: {
+				email: user.email,
+				password: user.password,
+				identTypeId: user.identTypeId,
+				identNum: user.identNum,
+			},
+		});
+		if (saveUser) throw { message: 'Error en guardar el Usuario' };
 
-	res.json(saveUser);
-	return res.status(200);
+		console.log('Register ->', req.method, user);
+
+		res.json(saveUser);
+		return res.status(200);
+	} catch (err) {
+		console.log(err);
+		return res.status(408).json({ message: 'Error en Api' });
+	}
 };

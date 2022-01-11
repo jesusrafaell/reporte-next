@@ -1,6 +1,6 @@
 import { Container, Grid } from '@mui/material';
-import Layout from '../../components/layout/Layout';
-import CustomTablePagination from '../../components/tables/CustomTablePagination';
+import Layout from '@/components/layout/Layout';
+import CustomTablePagination from '@/components/tables/CustomTablePagination';
 
 export default function Afiliado() {
 	return (
