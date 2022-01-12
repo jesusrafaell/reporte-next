@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				identNum: user.identNum,
 			},
 		});
-		if (saveUser) throw { message: 'Error en guardar el Usuario', code: 400 };
+		if (!saveUser) throw { message: 'Error en guardar el Usuario', code: 400 };
 
 		console.log('Register ->', req.method, user);
 
