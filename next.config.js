@@ -3,6 +3,6 @@ module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
 	serverRuntimeConfig: {
-		secret: 'THIS IS MY SECRET CHAIN ​​FOR THE LOGIN, REGISTRATION AND REQUESTS 123',
+		secret: 'THIS IS MY SECRET CHAIN ​FOR THE LOGIN, REGISTRATION AND REQUESTS 123',
 	},
 };

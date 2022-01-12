@@ -8,6 +8,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model IdentType {
+  id        Int      @id @default(autoincrement())
+  name      String 
+  createdAt DateTime @default(now())
+  user User[]
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -18,9 +25,15 @@ model User {
   identNum String
 }
 
-model IdentType {
+model Commerce{
   id        Int      @id @default(autoincrement())
   name      String 
   createdAt DateTime @default(now())
-  user User[]
+}
+
+model Afiliado {
+  id        Int      @id @default(autoincrement())
+  idCommerce Int
+  idUser    Int
+  createdAt DateTime @default(now())
 }
