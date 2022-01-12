@@ -66,7 +66,7 @@ export default function Register() {
 			const resError = {
 				type: 'Error',
 				message: err.message || 'Error in Api',
-				code: err.code || '',
+				code: err.code || '401',
 			};
 			console.log(resError);
 			return resError;

@@ -3,6 +3,14 @@ BEGIN TRY
 BEGIN TRAN;
 
 -- CreateTable
+CREATE TABLE [dbo].[IdentType] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [name] NVARCHAR(1000) NOT NULL,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [IdentType_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT [IdentType_pkey] PRIMARY KEY ([id])
+);
+
+-- CreateTable
 CREATE TABLE [dbo].[User] (
     [id] INT NOT NULL IDENTITY(1,1),
     [createdAt] DATETIME2 NOT NULL CONSTRAINT [User_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
@@ -15,11 +23,20 @@ CREATE TABLE [dbo].[User] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[IdentType] (
+CREATE TABLE [dbo].[Commerce] (
     [id] INT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(1000) NOT NULL,
-    [createdAt] DATETIME2 NOT NULL CONSTRAINT [IdentType_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT [IdentType_pkey] PRIMARY KEY ([id])
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [Commerce_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT [Commerce_pkey] PRIMARY KEY ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[Afiliado] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [idCommerce] INT NOT NULL,
+    [idUser] INT NOT NULL,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [Afiliado_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT [Afiliado_pkey] PRIMARY KEY ([id])
 );
 
 -- AddForeignKey
