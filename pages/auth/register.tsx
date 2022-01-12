@@ -3,7 +3,8 @@ import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, Text
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '@/styles/auth/styles';
 import Layout from '@/components/layout/Layout';
-import axios from 'axios';
+
+import Router from 'next/router';
 
 import Box from '@mui/material/Box';
 
@@ -12,6 +13,7 @@ import { validEmail, validPass, validIdentNum } from '@/validation/auth';
 import { useState } from 'react';
 import { errorFlagInt, FlagInt, UserInt } from './interfaces';
 import { validArrayBooelan } from 'utilis/validBoolean';
+import Swal from 'sweetalert2';
 
 export default function Register() {
 	const classes = useStyles();
@@ -34,6 +36,17 @@ export default function Register() {
 		identNum: false,
 	});
 
+	const successRegister = () => {
+		Swal.fire({
+			position: 'center',
+			icon: 'success',
+			title: 'Usuario Registrado',
+			showConfirmButton: false,
+			timer: 2000,
+		});
+		Router.push('/auth/login');
+	};
+
 	const register = async (user: UserInt) => {
 		try {
 			const res = await fetch('/api/register', {
@@ -44,8 +57,10 @@ export default function Register() {
 				body: JSON.stringify(user),
 			});
 			setButtonOn(false);
-			if (res.ok) return await res.json();
-			else throw await res.json();
+			if (res.ok) {
+				successRegister();
+				return await res.json();
+			} else throw await res.json();
 		} catch (err: any) {
 			setButtonOn(false);
 			const resError = {
@@ -61,7 +76,6 @@ export default function Register() {
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setButtonOn(true);
-		console.log('entre');
 		const data = new FormData(event.currentTarget);
 		const user: UserInt = {
 			email: data.get('email') as string,
@@ -100,9 +114,7 @@ export default function Register() {
 		}
 
 		//Endpoint
-		register(user).then((data) => {
-			console.log('res', data);
-		});
+		register(user);
 		// eslint-disable-next-line no-console
 	};
 

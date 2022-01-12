@@ -4630,6 +4630,11 @@
   "resolved" "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   "version" "1.0.0"
 
+"sweetalert2@^11.3.4":
+  "integrity" "sha512-o7owEtVtpqnB8y3BDCRn2taYb7URcf6RIUm120LjFxt8IHfPIm0UeHuiS3nEp5r9RKm5GlSSJOh/yuapUQcYcQ=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.3.4.tgz"
+  "version" "11.3.4"
+
 "tar-fs@^2.0.0":
   "integrity" "sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng=="
   "resolved" "https://registry.npmjs.org/tar-fs/-/tar-fs-2.1.1.tgz"
