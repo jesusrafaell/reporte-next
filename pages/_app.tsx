@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import createCache from '@emotion/cache';
 import Head from 'next/head';
 import { useEffect } from 'react';
+import useAuth from '@/hooks/useAuth';
 
 const theme = createTheme({
 	palette: {
@@ -23,6 +24,8 @@ const theme = createTheme({
 export const cache = createCache({ key: 'css', prepend: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
+	const user = useAuth();
+
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');

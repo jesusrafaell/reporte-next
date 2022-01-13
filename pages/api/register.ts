@@ -18,6 +18,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const user: UserInt = req.body;
 
+		const validUserEmail = await prisma.user.findFirst({
+			where: {
+				OR: [
+					{
+						email: user.email,
+					},
+					{
+						identTypeId: user.identTypeId,
+						identNum: user.identNum,
+					},
+				],
+			},
+		});
+
+		if (validUserEmail) throw { message: 'El email o el documento de identidad ya existe', code: 400 };
+
 		const saveUser = await prisma.user.create({
 			data: {
 				email: user.email,
@@ -26,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				identNum: user.identNum,
 			},
 		});
-		if (!saveUser) throw { message: 'Error en guardar el Usuario', code: 400 };
+		if (!saveUser) throw { message: 'Error al crear el usuario', code: 400 };
 
 		console.log('Register ->', req.method, user);
 

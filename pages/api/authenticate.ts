@@ -1,9 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import getConfig from 'next/config';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
+
+const { serverRuntimeConfig } = getConfig();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	//const { query } = req.body as { query: string };
@@ -18,14 +22,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 		});
 
-		if (!user) throw { message: 'Correo o Contrasena incorrecta', code: 400 };
+		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
 
 		const { password, id, ...dataUser }: any = user;
 		const validPassword = await bcrypt.compare(req.body.password, password);
 
-		if (!validPassword) throw { message: 'Contrasena incorrecta', code: 400 };
+		if (!validPassword) throw { message: 'Correo o contraseña contrasena incorrecta', code: 400 };
 
-		return res.status(200).json({ user: dataUser, code: 400 });
+		const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '7d' });
+
+		return res.status(200).json({ user: dataUser.email, token: token, code: 200 });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

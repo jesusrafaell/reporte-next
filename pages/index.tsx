@@ -1,12 +1,13 @@
 import { Box, LinearProgress } from '@mui/material';
 import type { NextPage } from 'next';
 import Router from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
+import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 
 const Home: NextPage = () => {
 	const [loaded, setLoaded] = useState<boolean>(false);
-	useEffect(() => {
+	useSafeLayoutEffect(() => {
 		const { pathname } = Router;
 		if (pathname == '/') {
 			Router.push('/auth/login');

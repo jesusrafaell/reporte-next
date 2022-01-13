@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Navbar from './Navbar';
 
 interface Props {
-	children: ReactChild | ReactChild;
+	children: ReactChild | ReactChildren;
 }
 
 export default function Layout({ children }: Props) {
