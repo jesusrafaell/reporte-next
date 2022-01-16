@@ -8,12 +8,12 @@ interface User {
 const useAuth = () => {
 	const [user, setUser] = useState<User | null>(null);
 	const getDataUser = async () => {
+		console.log('calling useAuth', localStorage.getItem('token'));
 		try {
 			const res = await useAxios.get('/api/auth/getUser');
-			console.log('Res Auth', res);
-			setUser({ email: `${res.data.id}` });
-		} catch (error) {
-			console.log('remove Token');
+			setUser({ email: `${res.data.email}` });
+		} catch (error: any) {
+			console.log('remove Token', error?.response);
 			localStorage.removeItem('token');
 			setUser(null);
 		}

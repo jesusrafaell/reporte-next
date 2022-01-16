@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useStylesNav } from '@/styles/navbar/navStyle';
 
 import Link from 'next/link';
+import useAuth from '@/hooks/useAuth';
 
 const pages = [
 	{
@@ -32,6 +33,9 @@ const pages = [
 const settings = ['Perfil', 'Cerrar sesión'];
 
 export default function NavBar() {
+	const { user } = useAuth();
+	console.log('Nav user', user);
+
 	const name = 'Tranred';
 
 	const classes = useStylesNav();
@@ -125,13 +129,16 @@ export default function NavBar() {
 						))}
 					</Box>
 					<Box sx={{ flexGrow: 0 }}>
-						{/* 
-              <Tooltip title='Open settings'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-                </IconButton>
-              </Tooltip>
-            */}
+						{user ? (
+							<Tooltip title='Open settings'>
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+									<Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+									<Typography style={{ marginLeft: '5px', color: '#fff' }} variant='h6' noWrap>
+										{user.email || 'Mi Cuenta'}
+									</Typography>
+								</IconButton>
+							</Tooltip>
+						) : null}
 						<Menu
 							sx={{ mt: '45px' }}
 							id='menu-appbar'

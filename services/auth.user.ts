@@ -3,6 +3,7 @@ import useAxios from '@/config';
 import { AxiosResponse } from 'axios';
 import Router from 'next/router';
 import { successLogin, successRegister } from '@/utilis/sweetalert-auth';
+import { asyncLocalStorage } from '@/utilis/asyncLocalStorage';
 
 export const authUser = {
 	login,

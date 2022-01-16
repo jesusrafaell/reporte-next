@@ -1,29 +1,33 @@
-import { Container, Grid } from '@mui/material';
+import { Button, Container, Grid } from '@mui/material';
 import Layout from '@/components/layout/Layout';
 import CustomTablePagination from '@/components/tables/CustomTablePagination';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { reporte } from '@/services/reportes.afilidado';
 
 export default function Afiliado() {
+	const [data, setData] = useState<any[]>([]);
+
 	const preData = async () => {
 		console.log(preData);
 		const res: any = await reporte.reporteTest();
 		if (res) {
 			console.log('res data', res);
+			setData(res);
 		}
 	};
-
-	useEffect(() => {
-		preData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<Layout>
 			<Container component='main' maxWidth='xl'>
 				<Grid container sx={{ mt: 3 }}>
 					<Grid item xs={12}>
-						<CustomTablePagination />
+						{data.length ? (
+							<CustomTablePagination rows={data} />
+						) : (
+							<Button type='submit' onClick={preData} fullWidth variant='contained' sx={{ mt: 2, mb: 1 }}>
+								Cargar Data
+							</Button>
+						)}
 					</Grid>
 				</Grid>
 			</Container>

@@ -45,8 +45,6 @@ const withToken = (handler: any) => {
 			}
 			return handler(req, res);
 		} catch (err: any) {
-			console.log(err);
-			console.log('middleware error', err);
 			return res.status(401).json({
 				success: false,
 				message: err.message || 'Porfavor, inicie sesión',

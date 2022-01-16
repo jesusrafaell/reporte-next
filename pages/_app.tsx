@@ -2,29 +2,19 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 
 import { CacheProvider } from '@emotion/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 import createCache from '@emotion/cache';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
-
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#2f3775',
-			contrastText: '#ffffff',
-		},
-		secondary: {
-			main: '#dff2ff',
-		},
-	},
-});
+import { theme } from '@/styles/themeMaterial';
 
 export const cache = createCache({ key: 'css', prepend: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const user = useAuth();
+	console.log('(_app):User', user);
 
 	useEffect(() => {
 		// Remove the server-side injected CSS.

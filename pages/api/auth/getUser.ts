@@ -3,13 +3,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import getConfig from 'next/config';
 import jwt from 'jsonwebtoken';
+import withToken from '@/middleware/api/withToken';
 
 const { serverRuntimeConfig } = getConfig();
 const Key: string = process.env.KEY || '_secreto';
 
 const prisma = new PrismaClient();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		//Pensar si quitar o no
 		const token: string = req.headers?.authorization!;
@@ -31,3 +32,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).json(err);
 	}
 };
+
+export default withToken(handler);
