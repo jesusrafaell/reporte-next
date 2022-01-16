@@ -26,7 +26,7 @@ const pages = [
 	},
 	{
 		name: 'Reportes',
-		path: '/reporte/afiliado',
+		path: '/reportes/afiliado',
 	},
 ];
 const settings = ['Perfil', 'Cerrar sesión'];

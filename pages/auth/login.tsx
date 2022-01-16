@@ -1,5 +1,4 @@
 import * as React from 'react';
-//import { Theme } from '@mui/material/styles';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '@/styles/auth/styles';
@@ -9,12 +8,8 @@ import Box from '@mui/material/Box';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
 import { useState } from 'react';
 import { validEmail } from '@/validation/auth';
-import { FlagInt } from './interfaces';
-
-interface User {
-	email: string;
-	password: string;
-}
+import { FlagInt, ObjString, UserLoginInt } from './interfaces';
+import { authUser } from '@/services/auth.user';
 
 export default function Login() {
 	const classes = useStyles();
@@ -31,40 +26,11 @@ export default function Login() {
 		password: false,
 	});
 
-	const login = async (user: User) => {
-		try {
-			const res = await fetch('/api/authenticate', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(user),
-			});
-			if (res.ok) {
-				const { user, token } = await res.json();
-				console.log(user);
-				console.log(token);
-				localStorage.setItem('token', token);
-				return { user, token };
-			}
-			throw await res.json();
-		} catch (err: any) {
-			const resError = {
-				type: 'Error',
-				message: err.message || 'Error in Api',
-				code: err.code || '401',
-			};
-			setError(err.message);
-			setAlert(true);
-			return resError;
-		}
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setAlert(false);
 		const data = new FormData(event.currentTarget);
-		const user: User = {
+		const user: UserLoginInt = {
 			email: data.get('email') as string,
 			password: data.get('password') as string,
 		};
@@ -79,8 +45,11 @@ export default function Login() {
 			return;
 		}
 
-		await login(user);
-		//console.log('test', res);
+		const res: ObjString = (await authUser.login(user)) as ObjString;
+		if (res) {
+			setError(res.message);
+			setAlert(true);
+		}
 		//eslint-disable-next-line no-console
 	};
 

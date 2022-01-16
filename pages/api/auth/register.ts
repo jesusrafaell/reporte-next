@@ -12,10 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.redirect(302, '/');
 	}
 	try {
-		// hash password
-		const salt: string = await bcrypt.genSalt(10);
-		req.body.password = await bcrypt.hash(req.body.password, salt);
-
 		const user: UserInt = req.body;
 
 		const validUserEmail = await prisma.user.findFirst({
@@ -34,6 +30,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		if (validUserEmail) throw { message: 'El email o el documento de identidad ya existe', code: 400 };
 
+		// hash password
+		const salt: string = await bcrypt.genSalt(10);
+		req.body.password = await bcrypt.hash(req.body.password, salt);
+
 		const saveUser = await prisma.user.create({
 			data: {
 				email: user.email,
@@ -49,6 +49,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(200).json({ saveUser, code: 200 });
 	} catch (err) {
 		console.log(err);
-		return res.status(400).json(err);
+		return res.status(400).send(err);
 	}
 };

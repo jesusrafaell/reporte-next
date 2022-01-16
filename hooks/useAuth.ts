@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useAxios from '@/config';
 
 interface User {
 	email: string;
@@ -8,22 +9,10 @@ const useAuth = () => {
 	const [user, setUser] = useState<User | null>(null);
 	const getDataUser = async () => {
 		try {
-			const res = await fetch('/api/getUser', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ token: localStorage.getItem('token') }),
-			});
-			const resJson = await res.json();
-			if (res.ok) {
-				console.log('Res Auth', resJson);
-				setUser({ email: `${resJson.id}` });
-				return;
-			}
-			throw resJson;
+			const res = await useAxios.get('/api/auth/getUser');
+			console.log('Res Auth', res);
+			setUser({ email: `${res.data.id}` });
 		} catch (error) {
-			console.log(error);
 			console.log('remove Token');
 			localStorage.removeItem('token');
 			setUser(null);
@@ -36,7 +25,11 @@ const useAuth = () => {
 			setUser(null);
 		}
 	}, []);
-	return user;
+
+	return {
+		user,
+		setUser,
+	};
 };
 
 export default useAuth;

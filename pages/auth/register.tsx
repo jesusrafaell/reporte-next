@@ -4,17 +4,18 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useStyles } from '@/styles/auth/styles';
 import Layout from '@/components/layout/Layout';
 
-import Router from 'next/router';
-
 import Box from '@mui/material/Box';
 
 import Auth from '@/components/auth/Auth';
 import { validEmail, validPass, validIdentNum } from '@/validation/auth';
 import { useState } from 'react';
-import { errorFlagInt, FlagInt, UserInt } from './interfaces';
+import { errorFlagInt, FlagInt, ObjString, UserInt } from './interfaces';
 import { validArrayBooelan } from 'utilis/validBoolean';
 import Swal from 'sweetalert2';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
+import useAxios from '@/config';
+import { AxiosResponse } from 'axios';
+import { authUser } from '@/services/auth.user';
 
 export default function Register() {
 	const classes = useStyles();
@@ -40,46 +41,6 @@ export default function Register() {
 		identNum: false,
 	});
 
-	const successRegister = () => {
-		Swal.fire({
-			position: 'center',
-			icon: 'success',
-			title: 'Usuario Registrado',
-			showConfirmButton: false,
-			timer: 2000,
-		});
-		Router.push('/auth/login');
-	};
-
-	const register = async (user: UserInt) => {
-		try {
-			const res = await fetch('/api/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(user),
-			});
-			setButtonOn(false);
-			if (res.ok) {
-				successRegister();
-				return await res.json();
-			}
-			throw await res.json();
-		} catch (err: any) {
-			setButtonOn(false);
-			const resError = {
-				type: 'Error',
-				message: err.message || 'Error in Api',
-				code: err.code || '401',
-			};
-			setError(err.message);
-			setAlert(true);
-			console.log(resError);
-			return resError;
-		}
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setAlert(false);
@@ -91,25 +52,29 @@ export default function Register() {
 			identTypeId: parseInt(data.get('identType') as string, 10),
 			identNum: data.get('identNum') as string,
 		};
-		//Validar Register
-		setErrorForm({
-			email: validEmail(user.email),
-			password: validPass(user.password, data.get('password2') as string),
-			identType: false,
-			identNum: validIdentNum(user.identNum),
-		});
 
+		//Validar Register
 		if (
 			validEmail(user.email) ||
 			validArrayBooelan(validPass(user.password, data.get('password2') as string)) ||
 			validIdentNum(user.identNum)
 		) {
+			setErrorForm({
+				email: validEmail(user.email),
+				password: validPass(user.password, data.get('password2') as string),
+				identType: false,
+				identNum: validIdentNum(user.identNum),
+			});
 			setButtonOn(false);
 			return;
 		}
 
-		//Endpoint
-		await register(user);
+		const res: ObjString = (await authUser.register(user)) as ObjString;
+		if (res) {
+			setButtonOn(false);
+			setError(res.message);
+			setAlert(true);
+		}
 		// eslint-disable-next-line no-console
 	};
 

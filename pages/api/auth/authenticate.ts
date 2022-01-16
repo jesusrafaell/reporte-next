@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		if (!validPassword) throw { message: 'Correo o contraseña contrasena incorrecta', code: 400 };
 
-		const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '7d' });
+		const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '3h' });
 
 		return res.status(200).json({ user: dataUser.email, token: token, code: 200 });
 	} catch (err) {
