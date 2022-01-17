@@ -938,6 +938,15 @@
   "resolved" "https://registry.npmjs.org/@types/mime/-/mime-1.3.2.tgz"
   "version" "1.3.2"
 
+"@types/mssql@^7.1.4":
+  "integrity" "sha512-WqK7aICej9PXMIhdHlVtJ7kj/SezW8AjJ3zEn837StU8B/m1CGXOFUKlESdTlxbWDh6EzATbnnRKaRZgqjIWDA=="
+  "resolved" "https://registry.npmjs.org/@types/mssql/-/mssql-7.1.4.tgz"
+  "version" "7.1.4"
+  dependencies:
+    "@types/node" "*"
+    "@types/tedious" "*"
+    "tarn" "^3.0.1"
+
 "@types/node-fetch@^2.5.0":
   "integrity" "sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw=="
   "resolved" "https://registry.npmjs.org/@types/node-fetch/-/node-fetch-2.5.12.tgz"
@@ -1023,6 +1032,13 @@
   "integrity" "sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ=="
   "resolved" "https://registry.npmjs.org/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz"
   "version" "0.0.30"
+
+"@types/tedious@*":
+  "integrity" "sha512-IrcBDpVpaSGBDoUImdAwoJhMGEJZhur1IzfZRqnbjXvFnsWmny7X1CGDSj/B3yzRF9XVdbgLrQ4UA8cHyTCyjg=="
+  "resolved" "https://registry.npmjs.org/@types/tedious/-/tedious-4.0.6.tgz"
+  "version" "4.0.6"
+  dependencies:
+    "@types/node" "*"
 
 "@types/tunnel@^0.0.3":
   "integrity" "sha512-sOUTGn6h1SfQ+gbgqC364jLFBw2lnFqkgF3q0WovEHRLMrVD1sd5aufqi/aJObLekJO+Aq5z646U4Oxy6shXMA=="

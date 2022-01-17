@@ -8,7 +8,6 @@ export default function Afiliado() {
 	const [data, setData] = useState<any[]>([]);
 
 	const preData = async () => {
-		console.log(preData);
 		const res: any = await reporte.reporteTest();
 		if (res) {
 			console.log('res data', res);
@@ -21,13 +20,10 @@ export default function Afiliado() {
 			<Container component='main' maxWidth='xl'>
 				<Grid container sx={{ mt: 3 }}>
 					<Grid item xs={12}>
-						{data.length ? (
-							<CustomTablePagination rows={data} />
-						) : (
-							<Button type='submit' onClick={preData} fullWidth variant='contained' sx={{ mt: 2, mb: 1 }}>
-								Cargar Data
-							</Button>
-						)}
+						{data.length ? <CustomTablePagination rows={data} /> : null}
+						<Button type='submit' onClick={preData} fullWidth variant='contained' sx={{ mt: 2, mb: 1 }}>
+							Cargar Data
+						</Button>
 					</Grid>
 				</Grid>
 			</Container>

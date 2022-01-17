@@ -87,12 +87,18 @@ export default function CustomTablePagination({ rows }: any) {
 				<TableBody>
 					{(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
 						(row: any) => (
-							<TableRow key={row.name}>
-								<TableCell component='th' scope='row'>
-									{row.name}
-								</TableCell>
+							<TableRow key={row.id}>
 								<TableCell style={{ width: 160 }} align='right'>
 									{row.id}
+								</TableCell>
+								<TableCell component='th' scope='row'>
+									{row.email}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align='right'>
+									{row.identTypeId}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align='right'>
+									{row.identNum}
 								</TableCell>
 							</TableRow>
 						)

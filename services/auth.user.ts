@@ -23,7 +23,7 @@ async function login(user: UserLoginInt) {
 		const resError = {
 			type: 'Error',
 			message: data.message || 'Error: Api',
-			code: data.code || '401',
+			code: data.code || err.response.status || '400',
 		};
 		console.log(resError);
 		return resError;
@@ -42,7 +42,7 @@ async function register(user: UserInt) {
 		const resError = {
 			type: 'Error',
 			message: data.message || 'Error: Api',
-			code: data.code || '401',
+			code: data.code || err.response.status || '400',
 		};
 		console.log(resError);
 		return resError;

@@ -1,6 +1,8 @@
 import useAxios from '@/config';
 import { AxiosResponse } from 'axios';
 
+import Router from 'next/router';
+
 export const reporte = {
 	reporteTest,
 };
@@ -11,11 +13,15 @@ async function reporteTest() {
 		console.log(res.data);
 		return res.data.reporte;
 	} catch (err: any) {
+		console.log(err.response);
 		const data = err.response?.data;
+		if (err.response.status === 401) {
+			Router.push('/auth/login');
+		}
 		const resError = {
 			type: 'Error',
 			message: data.message || 'Error: Api',
-			code: data.code || data.status || '404',
+			code: data.code || err.response.status || '400',
 		};
 		console.log(resError);
 		return resError;
