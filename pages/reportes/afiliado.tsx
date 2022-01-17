@@ -3,8 +3,10 @@ import Layout from '@/components/layout/Layout';
 import CustomTablePagination from '@/components/tables/CustomTablePagination';
 import { useEffect, useState } from 'react';
 import { reporte } from '@/services/reportes.afilidado';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import withProtected from '@/middleware/public/withProtected';
 
-export default function Afiliado() {
+function Afiliado() {
 	const [data, setData] = useState<any[]>([]);
 
 	const preData = async () => {
@@ -30,3 +32,5 @@ export default function Afiliado() {
 		</Layout>
 	);
 }
+
+export default Afiliado;

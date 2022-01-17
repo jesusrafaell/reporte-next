@@ -14,7 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { useStylesNav } from '@/styles/navbar/navStyle';
 
 import Link from 'next/link';
-import useAuth from '@/hooks/useAuth';
+import { useContext } from 'react';
+import AuthContext from '@/stores/authContext';
 
 const pages = [
 	{
@@ -30,11 +31,11 @@ const pages = [
 		path: '/reportes/afiliado',
 	},
 ];
-const settings = ['Perfil', 'Cerrar sesión'];
+
+//const settings = ['Cerrar sesión'];
 
 export default function NavBar() {
-	const { user } = useAuth();
-	console.log('Nav user', user);
+	const { user, logout } = useContext(AuthContext);
 
 	const name = 'Tranred';
 
@@ -154,11 +155,11 @@ export default function NavBar() {
 							}}
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}>
-							{settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseNavMenu}>
-									<Typography textAlign='center'>{setting}</Typography>
-								</MenuItem>
-							))}
+							<MenuItem onClick={handleCloseNavMenu}>
+								<Typography textAlign='center' onClick={logout}>
+									Cerrar sesión
+								</Typography>
+							</MenuItem>
 						</Menu>
 					</Box>
 				</Toolbar>

@@ -15,9 +15,12 @@ async function reporteTest() {
 	} catch (err: any) {
 		console.log(err.response);
 		const data = err.response?.data;
+
+		//Valid Token invalido
 		if (err.response.status === 401) {
 			Router.push('/auth/login');
 		}
+
 		const resError = {
 			type: 'Error',
 			message: data.message || 'Error: Api',

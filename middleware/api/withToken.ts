@@ -15,7 +15,6 @@ interface Handler {
 }
 
 const withToken = (handler: any) => {
-	console.log('entre middleware');
 	return async (req: NextApiRequest, res: NextApiResponse) => {
 		let token;
 		if (req.headers.authorization) {

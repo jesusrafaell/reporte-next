@@ -20,18 +20,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			where: {
 				email: req.body.email,
 			},
+			include: {
+				identType: true,
+			},
 		});
 
 		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
 
-		const { password, id, ...dataUser }: any = user;
+		const { password, id, ...dataUser } = user;
 		const validPassword = await bcrypt.compare(req.body.password, password);
 
 		if (!validPassword) throw { message: 'Correo o contraseña contrasena incorrecta', code: 400 };
 
 		const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '3h' });
 
-		return res.status(200).json({ user: dataUser.email, token: token, code: 200 });
+		const resUser = {
+			email: dataUser.email,
+			identType: dataUser.identType.name,
+			identNum: dataUser.identNum,
+		};
+
+		return res.status(200).json({ user: resUser, token: token, code: 200 });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

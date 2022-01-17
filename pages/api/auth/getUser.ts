@@ -22,11 +22,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			where: {
 				id: Resp.sub,
 			},
+			include: {
+				identType: true,
+			},
 		});
 
 		if (!user) throw { message: 'User not find', code: 400 };
 
-		return res.status(200).json({ email: user.email });
+		const resUser = {
+			email: user.email,
+			identType: user.identType.name,
+			identNum: user.identNum,
+		};
+
+		return res.status(200).json({ user: resUser });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

@@ -6,7 +6,7 @@ export const successLogin = (email: string) => {
 		icon: 'success',
 		title: `Hola, ${email}`,
 		showConfirmButton: false,
-		timer: 2000,
+		timer: 3000,
 	});
 };
 

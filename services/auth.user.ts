@@ -14,19 +14,13 @@ export const authUser = {
 async function login(user: UserLoginInt) {
 	try {
 		const res: AxiosResponse<any> = await useAxios.post('/api/auth/authenticate', user);
-		console.log(res.data.user);
+		//console.log(res.data.user);
 		localStorage.setItem('token', res.data.token);
-		successLogin(`${res.data.id}`);
-		Router.push('/reportes/afiliado');
+		successLogin(`${res.data.user.email}`);
+		return res;
 	} catch (err: any) {
-		const data = err.response?.data;
-		const resError = {
-			type: 'Error',
-			message: data.message || 'Error: Api',
-			code: data.code || err.response.status || '400',
-		};
-		console.log(resError);
-		return resError;
+		//console.log(resError);
+		return err;
 	}
 }
 
@@ -51,5 +45,4 @@ async function register(user: UserInt) {
 
 function logout() {
 	localStorage.removeItem('token');
-	Router.push('/auth/login');
 }

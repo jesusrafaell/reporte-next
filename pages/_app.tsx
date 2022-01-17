@@ -7,15 +7,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import createCache from '@emotion/cache';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import useAuth from '@/hooks/useAuth';
 import { theme } from '@/styles/themeMaterial';
+
+import { AuthContextProvider } from '@/stores/authContext';
 
 export const cache = createCache({ key: 'css', prepend: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const user = useAuth();
-	console.log('(_app):User', user);
-
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
@@ -32,7 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 				{/*<link rel='manifest' href='/manifest.json' /> */}
 			</Head>
 			<ThemeProvider theme={theme}>
-				<Component {...pageProps} />;
+				<AuthContextProvider>
+					<Component {...pageProps} />;
+				</AuthContextProvider>
 			</ThemeProvider>
 		</CacheProvider>
 	);

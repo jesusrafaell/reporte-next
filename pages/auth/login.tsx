@@ -6,13 +6,15 @@ import Layout from '@/components/layout/Layout';
 import Auth from '@/components/auth/Auth';
 import Box from '@mui/material/Box';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { validEmail } from '@/validation/auth';
 import { FlagInt, ObjString, UserLoginInt } from './interfaces';
-import { authUser } from '@/services/auth.user';
+import AuthContext from '@/stores/authContext';
 
 export default function Login() {
 	const classes = useStyles();
+
+	const { login } = useContext(AuthContext);
 
 	const name: string = 'Iniciar Sesión';
 
@@ -44,13 +46,11 @@ export default function Login() {
 			setError('Todos los campos son requeridos');
 			return;
 		}
-
-		const res: ObjString = (await authUser.login(user)) as ObjString;
+		const res = await login(user);
 		if (res) {
 			setError(res.message);
 			setAlert(true);
 		}
-		//eslint-disable-next-line no-console
 	};
 
 	return (
