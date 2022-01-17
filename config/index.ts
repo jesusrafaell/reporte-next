@@ -25,11 +25,6 @@ axios.interceptors.request.use(async (config: any) => {
 	return config;
 });
 
-/*
-axios.defaults.headers.common['Authorization'] =
-	(typeof window !== 'undefined' && localStorage.getItem('token')) || '';
-	*/
-
 const cache = new LRU({ max: 10 });
 
 configure({ axios, cache });

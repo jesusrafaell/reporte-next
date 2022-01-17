@@ -15,7 +15,7 @@ async function reporteTest() {
 		const resError = {
 			type: 'Error',
 			message: data.message || 'Error: Api',
-			code: data.code || data.status || '401',
+			code: data.code || data.status || '404',
 		};
 		console.log(resError);
 		return resError;
