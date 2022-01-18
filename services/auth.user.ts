@@ -3,7 +3,7 @@ import useAxios from '@/config';
 import { AxiosResponse } from 'axios';
 import Router from 'next/router';
 import { successLogin, successRegister } from '@/utilis/sweetalert-auth';
-import { asyncLocalStorage } from '@/utilis/asyncLocalStorage';
+import { setCookies, removeCookies } from 'cookies-next';
 
 export const authUser = {
 	login,
@@ -15,6 +15,7 @@ async function login(user: UserLoginInt) {
 	try {
 		const res: AxiosResponse<any> = await useAxios.post('/api/auth/authenticate', user);
 		//console.log(res.data.user);
+		setCookies('token', res.data.token);
 		localStorage.setItem('token', res.data.token);
 		successLogin(`${res.data.user.email}`);
 		return res;
@@ -44,5 +45,6 @@ async function register(user: UserInt) {
 }
 
 function logout() {
+	removeCookies('token');
 	localStorage.removeItem('token');
 }

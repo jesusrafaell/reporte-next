@@ -16,6 +16,13 @@ const saveUser = async () => {
 				identTypeId: 3,
 				identNum: '1234567',
 			},
+			{
+				//id 2
+				email: 'jesus2@correo.com',
+				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
+				identTypeId: 3,
+				identNum: '12345678',
+			},
 		],
 	});
 
@@ -23,9 +30,33 @@ const saveUser = async () => {
 		data: [
 			{
 				//id 1
-				name: 'Mc Donals',
+				name: 'BALNEARIO MARINA GRANDE S',
 				idTypeCcId: 3,
-				identNum: '1111111',
+				identNum: '000605610',
+			},
+			{
+				//id 2
+				name: 'PINTO S PAN DELY CA',
+				idTypeCcId: 3,
+				identNum: '295254555',
+			},
+			{
+				//id 3
+				name: 'COMERCIAL QUINTA GRANDE C',
+				idTypeCcId: 3,
+				identNum: '299515728',
+			},
+			{
+				//id 4
+				name: 'Mc Donalds',
+				idTypeCcId: 3,
+				identNum: '100605610',
+			},
+			{
+				//id 5
+				name: 'KFC',
+				idTypeCcId: 3,
+				identNum: '395254555',
 			},
 		],
 	});
@@ -34,9 +65,33 @@ const saveUser = async () => {
 		data: [
 			{
 				//id 1
-				numA: 51514141,
+				numA: 720015002,
 				userId: 1,
 				ccId: 1,
+			},
+			{
+				//id 2
+				numA: 720015003,
+				userId: 1,
+				ccId: 2,
+			},
+			{
+				//id 3
+				numA: 720015004,
+				userId: 1,
+				ccId: 3,
+			},
+			{
+				//id 4
+				numA: 820015003,
+				userId: 2,
+				ccId: 4,
+			},
+			{
+				//id 5
+				numA: 820015004,
+				userId: 2,
+				ccId: 5,
 			},
 		],
 	});

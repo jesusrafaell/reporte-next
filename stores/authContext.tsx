@@ -3,6 +3,7 @@ import useAxios from '@/config';
 import { authUser } from '@/services/auth.user';
 import { ObjString, UserLoginInt } from '@/pages/auth/interfaces';
 import Router from 'next/router';
+import { setCookies, removeCookies } from 'cookies-next';
 
 interface User {
 	email: string;
@@ -38,6 +39,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 		} catch (error: any) {
 			console.log('remove Token', error?.response);
 			localStorage.removeItem('token');
+			removeCookies('token');
 			setUser(null);
 		}
 	};

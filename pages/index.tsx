@@ -21,7 +21,7 @@ const Home: NextPage = () => {
 		} else {
 			setLoaded(true);
 		}
-	}, []);
+	}, [user]);
 
 	if (!loaded) {
 		return (
@@ -34,10 +34,10 @@ const Home: NextPage = () => {
 	return (
 		<Layout>
 			<div className={classes.base}>
-				<Image src={TranredLogo} alt='logo tranred' />
-				<div className={classes.title}>Bienvenido al sistema de Reportes Dinámicos</div>
-				<div className={classes.subtitle}>
-					Haga click en el menu superior izquierdo para navegar entre sistema de reportes
+				<div className={classes.title}>Bienvenido al sistema de Reportes</div>
+				<div className={classes.subtitle}>Haga click en el menu superior izquierdo para navegar entre sistema</div>
+				<div className={classes.imgLogo}>
+					<Image src={TranredLogo} alt='logo tranred' />
 				</div>
 			</div>
 		</Layout>

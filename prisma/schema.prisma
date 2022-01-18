@@ -42,7 +42,7 @@ model Commerce{
 
 model Afiliado {
   id        Int      @id @default(autoincrement())
-  numA      Int
+  numA      Int      @unique
   userId    Int
   ccId      Int
   //Relations

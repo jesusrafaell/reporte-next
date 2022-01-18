@@ -10,6 +10,8 @@ import { useContext, useState } from 'react';
 import { validEmail } from '@/validation/auth';
 import { FlagInt, ObjString, UserLoginInt } from './interfaces';
 import AuthContext from '@/stores/authContext';
+import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
+import { withNotAuth } from '@/middleware/public/withNotAuth';
 
 export default function Login() {
 	const classes = useStyles();
@@ -27,6 +29,11 @@ export default function Login() {
 		email: false,
 		password: false,
 	});
+
+	//Por ahora (borrar cuando pase todo a cookie)
+	useSafeLayoutEffect(() => {
+		localStorage.removeItem('token');
+	}, []);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -104,3 +111,9 @@ export default function Login() {
 		</Layout>
 	);
 }
+
+export const getServerSideProps = withNotAuth(async (ctx: any) => {
+	return {
+		props: {},
+	};
+});

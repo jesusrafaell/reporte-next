@@ -1,7 +1,5 @@
-import { verify } from 'crypto';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { promisify } from 'util';
 import getConfig from 'next/config';
 
 import { PrismaClient } from '@prisma/client';

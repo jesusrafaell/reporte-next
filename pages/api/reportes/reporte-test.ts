@@ -27,7 +27,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 	try {
 		await sql.connect(sqlConfig);
-		const response = await sql.query`select * from [User]`;
+		const response = await sql.query` 
+		SELECT 
+			u.id, 
+			u.email, 
+			ic.name as idenTUser,
+			u.identNum, 
+			af.numA,
+			cc.name,
+			icc.name as idenTCC,
+			cc.identNum as idenNumCC
+			FROM [User] as u
+		JOIN [IdentType] as ic
+			ON ic.id = u.identTypeId
+		INNER JOIN [Afiliado] as af
+			ON af.userId = u.id
+		INNER JOIN [Commerce] as cc
+			ON cc.id = af.ccId
+		JOIN [IdentType] as icc
+			ON icc.id = cc.idTypeCcId
+		`;
 		//console.log('resQuery: ', response.recordset);
 		let reporte = response.recordset;
 		if (!reporte.length) throw { message: 'No se encontro ningun reporte', code: 401 };
@@ -39,3 +58,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default withToken(handler);
+
+/*
+Test
+SELECT 
+	u.id, 
+	u.email, 
+	ic.name as idenTUser,
+	u.identNum, 
+	af.numA,
+	cc.name,
+	icc.name as idenTCC,
+	cc.identNum
+	FROM [User] as u
+JOIN [IdentType] as ic
+	ON ic.id = u.identTypeId
+INNER JOIN [Afiliado] as af
+	ON af.userId = u.id
+INNER JOIN [Commerce] as cc
+	ON cc.id = af.ccId
+JOIN [IdentType] as icc
+	ON icc.id = cc.idTypeCcId;
+	*/

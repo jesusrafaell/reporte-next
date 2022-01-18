@@ -95,10 +95,18 @@ export default function CustomTablePagination({ rows }: any) {
 									{row.email}
 								</TableCell>
 								<TableCell style={{ width: 160 }} align='right'>
-									{row.identTypeId}
+									{row.idenTUser}
+									{row.identNum}
 								</TableCell>
 								<TableCell style={{ width: 160 }} align='right'>
-									{row.identNum}
+									{row.name}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align='right'>
+									{row.numA}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align='right'>
+									{row.idenTCC}
+									{row.idenNumCC}
 								</TableCell>
 							</TableRow>
 						)

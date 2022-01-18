@@ -5,32 +5,29 @@ import getConfig from 'next/config';
 
 const { serverRuntimeConfig } = getConfig();
 
-export function withProtected(gssp: GetServerSideProps) {
+export function withNotAuth(gssp: GetServerSideProps) {
 	return async (ctx: GetServerSidePropsContext) => {
 		const { req, res } = ctx;
+		console.log('with no auth');
 		const token: string = getCookie('token', { req, res }) as string;
-		console.log('hola in auth', token);
-
 		if (!token) {
-			return {
-				redirect: {
-					destination: '/auth/login',
-					statusCode: 302,
-				},
-			};
+			console.log('no tiene token');
+			return await gssp(ctx); // Continue
 		}
 		//verifico que el token sea valido
 		try {
 			jwt.verify(token, serverRuntimeConfig.secret);
-			return await gssp(ctx); // Continue
-		} catch (err) {
-			removeCookies('token', { req, res });
+			console.log('tiene token y es valido');
 			return {
 				redirect: {
-					destination: '/auth/login',
+					destination: '/',
 					statusCode: 302,
 				},
 			};
+		} catch (err) {
+			console.log('token invalido asi que ve al login/register');
+			removeCookies('token', { req, res });
+			return await gssp(ctx); // Continue
 		}
 	};
 }

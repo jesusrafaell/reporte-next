@@ -1,11 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 import getConfig from 'next/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
-const prisma = new PrismaClient();
+import prisma from '@/prisma';
 
 const { serverRuntimeConfig } = getConfig();
 

@@ -4,9 +4,9 @@ import CustomTablePagination from '@/components/tables/CustomTablePagination';
 import { useEffect, useState } from 'react';
 import { reporte } from '@/services/reportes.afilidado';
 import { GetServerSideProps, GetStaticProps } from 'next';
-import withProtected from '@/middleware/public/withProtected';
+import { withProtected } from '@/middleware/public/withProtected';
 
-function Afiliado() {
+function Afiliado(): JSX.Element {
 	const [data, setData] = useState<any[]>([]);
 
 	const preData = async () => {
@@ -34,3 +34,9 @@ function Afiliado() {
 }
 
 export default Afiliado;
+
+export const getServerSideProps = withProtected(async (ctx: any) => {
+	return {
+		props: {},
+	};
+});

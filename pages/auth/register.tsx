@@ -11,11 +11,9 @@ import { validEmail, validPass, validIdentNum } from '@/validation/auth';
 import { useState } from 'react';
 import { errorFlagInt, FlagInt, ObjString, UserInt } from './interfaces';
 import { validArrayBooelan } from 'utilis/validBoolean';
-import Swal from 'sweetalert2';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
-import useAxios from '@/config';
-import { AxiosResponse } from 'axios';
 import { authUser } from '@/services/auth.user';
+import { withNotAuth } from '@/middleware/public/withNotAuth';
 
 export default function Register() {
 	const classes = useStyles();
@@ -202,3 +200,9 @@ export default function Register() {
 		</Layout>
 	);
 }
+
+export const getServerSideProps = withNotAuth(async (ctx: any) => {
+	return {
+		props: {},
+	};
+});

@@ -1,14 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 import getConfig from 'next/config';
 import jwt from 'jsonwebtoken';
 import withToken from '@/middleware/api/withToken';
+import prisma from '@/prisma';
 
 const { serverRuntimeConfig } = getConfig();
 const Key: string = process.env.KEY || '_secreto';
-
-const prisma = new PrismaClient();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {

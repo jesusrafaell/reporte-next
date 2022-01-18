@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<CacheProvider value={cache}>
 			<Head>
-				<title>Reporte BCV</title>
+				<title>Reportes Next</title>
 				<link rel='shortcut icon' href='/icon.png' />
 				{/*<link rel='manifest' href='/manifest.json' /> */}
 			</Head>

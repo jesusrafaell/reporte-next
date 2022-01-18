@@ -16,8 +16,9 @@ import { useStylesNav } from '@/styles/navbar/navStyle';
 import Link from 'next/link';
 import { useContext } from 'react';
 import AuthContext from '@/stores/authContext';
+import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 
-const pages = [
+const pagesInit = [
 	{
 		name: 'Iniciar sesión',
 		path: '/auth/login',
@@ -26,6 +27,9 @@ const pages = [
 		name: 'Registrarme',
 		path: '/auth/register',
 	},
+];
+
+const PagesInitUser = [
 	{
 		name: 'Reportes',
 		path: '/reportes/afiliado',
@@ -36,6 +40,16 @@ const pages = [
 
 export default function NavBar() {
 	const { user, logout } = useContext(AuthContext);
+
+	const [pages, setPages] = React.useState<any[]>(pagesInit);
+
+	useSafeLayoutEffect(() => {
+		if (user) {
+			setPages(PagesInitUser);
+		} else {
+			setPages(pagesInit);
+		}
+	}, [user]);
 
 	const name = 'Tranred';
 
@@ -129,8 +143,8 @@ export default function NavBar() {
 							</span>
 						))}
 					</Box>
-					<Box sx={{ flexGrow: 0 }}>
-						{user ? (
+					{user ? (
+						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip title='Open settings'>
 								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 									<Typography style={{ marginRight: '10px', color: '#fff' }} variant='h6' noWrap>
@@ -139,29 +153,29 @@ export default function NavBar() {
 									<Avatar alt='Remy Sharp' />
 								</IconButton>
 							</Tooltip>
-						) : null}
-						<Menu
-							sx={{ mt: '45px' }}
-							id='menu-appbar'
-							anchorEl={anchorElUser}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={Boolean(anchorElUser)}
-							onClose={handleCloseUserMenu}>
-							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign='center' onClick={logout}>
-									Cerrar sesión
-								</Typography>
-							</MenuItem>
-						</Menu>
-					</Box>
+							<Menu
+								sx={{ mt: '45px' }}
+								id='menu-appbar'
+								anchorEl={anchorElUser}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<Typography textAlign='center' onClick={logout}>
+										Cerrar sesión
+									</Typography>
+								</MenuItem>
+							</Menu>
+						</Box>
+					) : null}
 				</Toolbar>
 			</Container>
 		</AppBar>

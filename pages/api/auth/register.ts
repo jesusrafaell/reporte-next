@@ -1,10 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { UserInt } from 'pages/auth/interfaces';
-
-const prisma = new PrismaClient();
+import prisma from '@/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== 'POST') {
