@@ -1,19 +1,25 @@
 import { Button, Container, Grid } from '@mui/material';
 import Layout from '@/components/layout/Layout';
 import CustomTablePagination from '@/components/tables/CustomTablePagination';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { reporte } from '@/services/reportes.afilidado';
-import { GetServerSideProps, GetStaticProps } from 'next';
 import { withProtected } from '@/middleware/public/withProtected';
 
+import { useContext } from 'react';
+import AuthContext from '@/stores/authContext';
+
 function Afiliado(): JSX.Element {
+	const { user, logout } = useContext(AuthContext);
+
 	const [data, setData] = useState<any[]>([]);
 
 	const preData = async () => {
-		const res: any = await reporte.reporteTest();
-		if (res) {
-			console.log('res data', res);
-			setData(res);
+		if (user) {
+			const res: any = await reporte.reporteTest(user);
+			if (res) {
+				console.log('res data', res);
+				setData(res);
+			}
 		}
 	};
 

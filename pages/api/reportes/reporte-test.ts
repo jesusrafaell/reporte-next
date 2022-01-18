@@ -8,6 +8,13 @@ const { serverRuntimeConfig } = getConfig();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { server, port, db, username, password } = serverRuntimeConfig;
+	console.log('body');
+
+	const NextRequestMetaSymbol = Reflect.ownKeys(req).find((key) => key.toString() === 'Symbol(NextRequestMeta)');
+	const userData =
+		NextRequestMetaSymbol && req[NextRequestMetaSymbol].__NEXT_INIT_QUERY
+			? req[NextRequestMetaSymbol].__NEXT_INIT_QUERY
+			: undefined;
 
 	const sqlConfig = {
 		server: server,
@@ -46,6 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			ON cc.id = af.ccId
 		JOIN [IdentType] as icc
 			ON icc.id = cc.idTypeCcId
+			WHERE u.email = ${userData.email}
 		`;
 		//console.log('resQuery: ', response.recordset);
 		let reporte = response.recordset;

@@ -1,4 +1,5 @@
 import useAxios from '@/config';
+import { User } from '@/stores/authContext';
 import { AxiosResponse } from 'axios';
 
 import Router from 'next/router';
@@ -7,9 +8,9 @@ export const reporte = {
 	reporteTest,
 };
 
-async function reporteTest() {
+async function reporteTest(user: User) {
 	try {
-		const res: AxiosResponse<any> = await useAxios.get('/api/reportes/reporte-test');
+		const res = await useAxios.get('/api/reportes/reporte-test', { params: user });
 		console.log(res.data);
 		return res.data.reporte;
 	} catch (err: any) {

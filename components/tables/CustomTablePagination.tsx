@@ -98,7 +98,7 @@ export default function CustomTablePagination({ rows }: any) {
 									{row.idenTUser}
 									{row.identNum}
 								</TableCell>
-								<TableCell style={{ width: 160 }} align='right'>
+								<TableCell style={{ width: 350 }} align='right'>
 									{row.name}
 								</TableCell>
 								<TableCell style={{ width: 160 }} align='right'>

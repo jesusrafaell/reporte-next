@@ -5,7 +5,7 @@ import { ObjString, UserLoginInt } from '@/pages/auth/interfaces';
 import Router from 'next/router';
 import { setCookies, removeCookies } from 'cookies-next';
 
-interface User {
+export interface User {
 	email: string;
 	identType: string;
 	identNum: string;
