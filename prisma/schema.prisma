@@ -9,35 +9,44 @@ generator client {
 }
 
 model IdentType {
+  createdAt DateTime @default(now())
   id        Int      @id @default(autoincrement())
   name      String 
-  createdAt DateTime @default(now())
-  user User[]
-  commerce Commerce[]
+  //Relations
+  user      User[]
+  commerce  Commerce[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  password  String
-  identType IdentType @relation(fields: [identTypeId], references: [id])
+  createdAt   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
   identTypeId Int
-  identNum String
+  identNum    String
+  //Relations
+  identType   IdentType @relation(fields: [identTypeId], references: [id])
+  afiliado    Afiliado[]
 }
 
 model Commerce{
-  id        Int      @id @default(autoincrement())
-  name      String 
-  identType IdentType @relation(fields: [identTypeId], references: [id])
-  identTypeId Int
-  identNum String
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  name          String 
+  identTypeCc   IdentType @relation(fields: [idTypeCcId], references: [id])
+  idTypeCcId    Int
+  identNum      String
+  //Relations
+  afiliado      Afiliado?
+  createdAt     DateTime @default(now())
 }
 
 model Afiliado {
   id        Int      @id @default(autoincrement())
-  idCommerce Int
-  idUser    Int
+  numA      Int
+  userId    Int
+  ccId      Int
+  //Relations
+  user      User     @relation(fields: [userId], references: [id])
+  cc        Commerce @relation(fields: [ccId], references: [id],  onUpdate: NoAction)
   createdAt DateTime @default(now())
 }
