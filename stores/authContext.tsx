@@ -3,7 +3,8 @@ import useAxios from '@/config';
 import { authUser } from '@/services/auth.user';
 import { ObjString, UserLoginInt } from '@/interfaces/auth/interfaces';
 import Router from 'next/router';
-import { setCookies, removeCookies } from 'cookies-next';
+import { removeCookies, getCookies, setCookies } from 'cookies-next';
+import { validSession } from '@/validation/session';
 
 export interface User {
 	email: string;
@@ -26,7 +27,6 @@ const AuthContext = createContext<Context>({
 	user: null,
 	login: () => {},
 	logout: () => {},
-	//authReady: false,
 });
 
 export const AuthContextProvider = ({ children }: Props) => {
@@ -35,18 +35,20 @@ export const AuthContextProvider = ({ children }: Props) => {
 	const getDataUser = async () => {
 		console.log('calling useAuth');
 		try {
-			const res = await useAxios.get('/api/auth/getUser');
-			setUser(res.data.user);
+			const res = await useAxios.get('/api/auth/user/getUser');
+			const { user, token }: { user: User; token: string } = res.data;
+			localStorage.setItem('token', token);
+			setCookies('token', token);
+			setUser(user);
 		} catch (error: any) {
 			console.log('remove Token', error?.response);
-			localStorage.removeItem('token');
-			removeCookies('token');
 			setUser(null);
+			validSession(error);
 		}
 	};
 
 	useEffect(() => {
-		if (localStorage.getItem('token')) {
+		if (getCookies().token) {
 			getDataUser();
 		} else {
 			setUser(null);

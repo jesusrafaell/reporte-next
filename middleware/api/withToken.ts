@@ -1,12 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
-
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/prisma';
 
 const { serverRuntimeConfig } = getConfig();
-
-const prisma = new PrismaClient();
 
 interface Handler {
 	handler: any;
@@ -18,19 +15,29 @@ const withToken = (handler: any) => {
 		if (req.headers.authorization) {
 			token = req.headers.authorization;
 		}
+
 		if (!token) {
 			return res.status(401).json({
 				success: false,
-				message: 'Porfavor, inicie sesión.',
+				message: 'Inicie sesión.',
+			});
+		}
+		let decoded;
+		try {
+			decoded = jwt.verify(token, serverRuntimeConfig.secret);
+		} catch (err: any) {
+			return res.status(401).json({
+				success: false,
+				restart: true,
+				message: 'Invalid Token',
 			});
 		}
 		try {
 			//Verifica si el token es valido
-			const decoded: any = jwt.verify(token, serverRuntimeConfig.secret);
 			//Verifica si el usuario existe
 			const currentUser = await prisma.user.findUnique({
 				where: {
-					id: decoded.sub,
+					id: Number(decoded.sub),
 				},
 			});
 			if (!currentUser) {
@@ -41,9 +48,10 @@ const withToken = (handler: any) => {
 			}
 			return handler(req, res);
 		} catch (err: any) {
+			console.log(err);
 			return res.status(401).json({
 				success: false,
-				message: err.message || 'Porfavor, inicie sesión',
+				message: err.message || 'Inicie sesión',
 			});
 		}
 	};

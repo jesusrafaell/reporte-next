@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useStylesNav } from '@/styles/navbar/navStyle';
@@ -145,12 +144,12 @@ export default function NavBar() {
 					</Box>
 					{user ? (
 						<Box sx={{ flexGrow: 0 }}>
-							<Tooltip title='Open settings'>
+							<Tooltip title='Opciones'>
 								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 									<Typography style={{ marginRight: '10px', color: '#fff' }} variant='h6' noWrap>
 										{user.email || 'Mi Cuenta'}
 									</Typography>
-									<Avatar alt='Remy Sharp' />
+									<Avatar alt='Cliente' />
 								</IconButton>
 							</Tooltip>
 							<Menu

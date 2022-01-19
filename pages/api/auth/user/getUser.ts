@@ -4,6 +4,7 @@ import getConfig from 'next/config';
 import jwt from 'jsonwebtoken';
 import withToken from '@/middleware/api/withToken';
 import prisma from '@/prisma';
+import createToken from '@/utilis/createToken';
 
 const { serverRuntimeConfig } = getConfig();
 const Key: string = process.env.KEY || '_secreto';
@@ -12,13 +13,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		//Pensar si quitar o no
 		const token: string = req.headers?.authorization!;
-		const Resp: any = jwt.verify(token, serverRuntimeConfig.secret);
-		if (!Resp) throw { message: 'Token invalid', code: 400 };
+		const { sub }: any = jwt.verify(token, serverRuntimeConfig.secret);
 
 		//Aqui va el getUser
 		const user = await prisma.user.findUnique({
 			where: {
-				id: Resp.sub,
+				id: sub,
 			},
 			include: {
 				identType: true,
@@ -30,6 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
+		const newToken: string = createToken(user.id);
+
 		const resUser = {
 			email: user.email,
 			identType: user.identType.name,
@@ -37,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			numAfiliado: user.afiliado[0].numA,
 		};
 
-		return res.status(200).json({ user: resUser });
+		return res.status(200).json({ user: resUser, token: newToken });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

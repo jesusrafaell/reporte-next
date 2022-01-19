@@ -20,7 +20,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 //For Send token
 axios.interceptors.request.use(async (config: any) => {
-	console.log('interceptor', localStorage.getItem('token'));
+	//console.log('interceptor', localStorage.getItem('token'));
 	config.headers['Authorization'] = localStorage.getItem('token');
 	return config;
 });

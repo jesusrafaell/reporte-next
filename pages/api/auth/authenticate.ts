@@ -1,9 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
+import createToken from '@/utilis/createToken';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		if (!validPassword) throw { message: 'Correo o contraseña contrasena incorrecta', code: 400 };
 
-		const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '3h' });
+		const token: string = createToken(id);
 
 		const resUser = {
 			email: dataUser.email,

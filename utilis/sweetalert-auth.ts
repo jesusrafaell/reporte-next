@@ -19,3 +19,13 @@ export const successRegister = () => {
 		timer: 2000,
 	});
 };
+
+export const sessionExpired = () => {
+	Swal.fire({
+		position: 'center',
+		icon: 'error',
+		title: `Su tiempo a expirado`,
+		showConfirmButton: false,
+		timer: 2000,
+	});
+};

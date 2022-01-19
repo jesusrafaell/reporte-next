@@ -1,6 +1,9 @@
 import useAxios from '@/config';
 import { User } from '@/stores/authContext';
+import { sessionExpired } from '@/utilis/sweetalert-auth';
+import { validSession } from '@/validation/session';
 import { AxiosResponse } from 'axios';
+import { ValidatorsImpl } from 'express-validator/src/chain';
 
 import Router from 'next/router';
 
@@ -17,10 +20,8 @@ async function getTerminals(user: User) {
 		console.log(err.response);
 		const data = err.response?.data;
 
-		//Valid Token invalido
-		if (err.response.status === 401) {
-			Router.push('/auth/login');
-		}
+		//Valid Token invalido //mover de aqui a un validador de session expired
+		validSession(err);
 
 		const resError = {
 			type: 'Error',
