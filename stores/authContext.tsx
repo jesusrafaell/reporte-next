@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import useAxios from '@/config';
 import { authUser } from '@/services/auth.user';
-import { ObjString, UserLoginInt } from '@/pages/auth/interfaces';
+import { ObjString, UserLoginInt } from '@/interfaces/auth/interfaces';
 import Router from 'next/router';
 import { setCookies, removeCookies } from 'cookies-next';
 
@@ -9,6 +9,7 @@ export interface User {
 	email: string;
 	identType: string;
 	identNum: string;
+	numAfiliado: string;
 }
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 
 interface Context {
 	user: User | null;
-	login(user: UserLoginInt | null): ObjString | void | any;
+	login(user: UserLoginInt | null): Promise<ObjString | void> | void;
 	logout(): void;
 }
 
@@ -64,11 +65,12 @@ export const AuthContextProvider = ({ children }: Props) => {
 			};
 			return resError;
 		}
-		const { email, identType, identNum } = res.data.user;
+		const { email, identType, identNum, numAfiliado } = res.data.user;
 		setUser({
 			email,
 			identType,
 			identNum,
+			numAfiliado,
 		});
 		Router.push('/reportes/afiliado');
 	};

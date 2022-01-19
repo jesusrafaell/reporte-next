@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Auth from '@/components/auth/Auth';
 import { validEmail, validPass, validIdentNum } from '@/validation/auth';
 import { useState } from 'react';
-import { errorFlagInt, FlagInt, ObjString, UserInt } from './interfaces';
+import { errorFlagInt, FlagInt, ObjString, UserInt } from '../../interfaces/auth/interfaces';
 import { validArrayBooelan } from 'utilis/validBoolean';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
 import { authUser } from '@/services/auth.user';

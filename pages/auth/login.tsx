@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
 import { useContext, useState } from 'react';
 import { validEmail } from '@/validation/auth';
-import { FlagInt, ObjString, UserLoginInt } from './interfaces';
+import { FlagInt, ObjString, UserLoginInt } from '../../interfaces/auth/interfaces';
 import AuthContext from '@/stores/authContext';
 import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 import { withNotAuth } from '@/middleware/public/withNotAuth';

@@ -1,4 +1,4 @@
-import { FlagInt } from 'pages/auth/interfaces';
+import { FlagInt } from '@/interfaces/auth/interfaces';
 
 export const validArrayBooelan = (data: FlagInt) => {
 	return Object.keys(data).find((item) => {

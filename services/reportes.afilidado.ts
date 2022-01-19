@@ -5,14 +5,14 @@ import { AxiosResponse } from 'axios';
 import Router from 'next/router';
 
 export const reporte = {
-	reporteTest,
+	getTerminals,
 };
 
-async function reporteTest(user: User) {
+async function getTerminals(user: User) {
 	try {
-		const res = await useAxios.get('/api/reportes/reporte-test', { params: user });
-		console.log(res.data);
-		return res.data.reporte;
+		const res = await useAxios.get(`/api/reportes/terminales/${user.numAfiliado}`);
+		console.log('repote', res.data);
+		return [];
 	} catch (err: any) {
 		console.log(err.response);
 		const data = err.response?.data;

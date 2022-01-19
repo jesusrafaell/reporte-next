@@ -22,15 +22,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 			include: {
 				identType: true,
+				afiliado: true,
 			},
 		});
 
-		if (!user) throw { message: 'User not find', code: 400 };
+		if (!user) throw { message: 'Su usuario no existe', code: 400 };
+
+		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
 		const resUser = {
 			email: user.email,
 			identType: user.identType.name,
 			identNum: user.identNum,
+			numAfiliado: user.afiliado[0].numA,
 		};
 
 		return res.status(200).json({ user: resUser });

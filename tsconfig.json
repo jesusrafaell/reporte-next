@@ -24,6 +24,6 @@
 			"@*": ["./components/@*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.ts", "prisma/db/*"],
-	"exclude": ["node_modules"]
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.ts"],
+	"exclude": ["node_modules", "prisma/db/*"]
 }

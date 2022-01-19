@@ -1,4 +1,4 @@
-import { UserInt, UserLoginInt } from '@/pages/auth/interfaces';
+import { UserInt, UserLoginInt } from '@/interfaces/auth/interfaces';
 import useAxios from '@/config';
 import { AxiosResponse } from 'axios';
 import Router from 'next/router';

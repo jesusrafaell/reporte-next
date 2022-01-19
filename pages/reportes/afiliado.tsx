@@ -15,7 +15,7 @@ function Afiliado(): JSX.Element {
 
 	const preData = async () => {
 		if (user) {
-			const res: any = await reporte.reporteTest(user);
+			const res: any = await reporte.getTerminals(user);
 			if (res) {
 				console.log('res data', res);
 				setData(res);
@@ -41,8 +41,10 @@ function Afiliado(): JSX.Element {
 
 export default Afiliado;
 
+/*
 export const getServerSideProps = withProtected(async (ctx: any) => {
 	return {
 		props: {},
 	};
 });
+*/

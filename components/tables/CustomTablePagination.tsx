@@ -63,7 +63,7 @@ function createData(name: string, code: string, population: number, size: number
 	return { name, code, population, size, density };
 }
 
-export default function CustomTablePagination({ rows }) {
+export default function CustomTablePagination({ rows }: any) {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -93,10 +93,10 @@ export default function CustomTablePagination({ rows }) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index: number) => {
+						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any, index: number) => {
 							return (
 								<TableRow hover role='checkbox' tabIndex={-1} key={index}>
-									{columns.map((column, index: number) => {
+									{columns.map((column: Column, index: number) => {
 										let value = row[column.id];
 										if (column.format) value = column.format(row);
 										console.log(value);

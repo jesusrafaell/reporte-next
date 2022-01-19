@@ -20,10 +20,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 			include: {
 				identType: true,
+				afiliado: true,
 			},
 		});
 
 		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
+
+		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
 		const { password, id, ...dataUser } = user;
 		const validPassword = await bcrypt.compare(req.body.password, password);
@@ -36,11 +39,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			email: dataUser.email,
 			identType: dataUser.identType.name,
 			identNum: dataUser.identNum,
+			numAfiliado: user.afiliado[0].numA,
 		};
 
 		return res.status(200).json({ user: resUser, token: token, code: 200 });
 	} catch (err) {
-		console.log(err);
 		return res.status(400).json(err);
 	}
 };

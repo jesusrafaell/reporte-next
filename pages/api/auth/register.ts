@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
-import { UserInt } from 'pages/auth/interfaces';
+import { UserInt } from '@/interfaces/auth/interfaces';
 import prisma from '@/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

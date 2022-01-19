@@ -25,7 +25,6 @@ const withToken = (handler: any) => {
 			});
 		}
 		try {
-			//const res = await promisify(jwt.verify)(token, serverRuntimeConfig.secret);
 			//Verifica si el token es valido
 			const decoded: any = jwt.verify(token, serverRuntimeConfig.secret);
 			//Verifica si el usuario existe
