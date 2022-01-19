@@ -1,5 +1,5 @@
 {
-	"name": "reporte-bvc",
+	"name": "reporte-next",
 	"private": true,
 	"scripts": {
 		"now:dev": "now dev",

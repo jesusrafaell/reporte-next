@@ -11,9 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	console.log('body');
 
 	const NextRequestMetaSymbol = Reflect.ownKeys(req).find((key) => key.toString() === 'Symbol(NextRequestMeta)');
+	const auxReq: any = req;
 	const userData =
-		NextRequestMetaSymbol && req[NextRequestMetaSymbol].__NEXT_INIT_QUERY
-			? req[NextRequestMetaSymbol].__NEXT_INIT_QUERY
+		NextRequestMetaSymbol && auxReq[NextRequestMetaSymbol].__NEXT_INIT_QUERY
+			? auxReq[NextRequestMetaSymbol].__NEXT_INIT_QUERY
 			: undefined;
 
 	const sqlConfig = {
