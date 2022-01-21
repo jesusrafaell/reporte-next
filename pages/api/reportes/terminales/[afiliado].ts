@@ -4,12 +4,11 @@ import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
 
-
 const { serverRuntimeConfig } = getConfig();
 
 const { server, port, db, username, password } = serverRuntimeConfig;
 
-const sqlConfig = {
+const sqlConfig: any = {
 	server: process.env.HOST_MAIN,
 	port: Number(port),
 	database: 'tm_trans_base',
@@ -21,16 +20,6 @@ const sqlConfig = {
 		//change to true for local dev / self-signed certs
 	},
 };
-
-/*
-SELECT DISTINCT
-  card_acceptor_term_id 'Terminal',
-  card_acceptor_id_code 'afiliado',
-  card_acceptor_name_loc 'Nombre', 
-  Serial_Equipo = left(right(source_node_additional_data, 19), 9) 
-FROM tm_trans(nolock) WHERE  
-  card_acceptor_name_loc  is not null and card_acceptor_id_code=${Number(afiliado)}
-*/
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const afiliado = req.query.afiliado as string;
@@ -54,7 +43,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		console.log(err);
 		return res.status(400).json(err);
 	}
-};
 };
 
 export default withToken(handler);
