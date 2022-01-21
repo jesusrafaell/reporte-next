@@ -30,22 +30,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		console.log('conection ok');
 
 		const response = await sql.query` 
-		SELECT * FROM OPENQUERY([PRUEBA_7218], '
-			SELECT 
-				card_acceptor_term_id as Terminal,
-				card_acceptor_id_code as Afiliado,
-				card_acceptor_name_loc as Nombre,
-				Serial_Equipo
-			FROM
-				(SELECT distinct
-					card_acceptor_term_id , 
-					card_acceptor_id_code , 
-					card_acceptor_name_loc, 
-					left(right(source_node_additional_data, 19), 9) as Serial_Equipo
-					FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
-				WHERE  
-					card_acceptor_name_loc  is not null and card_acceptor_id_code = 720000121
-			) AS a
+			SELECT * FROM OPENQUERY([PRUEBA_7218], '
+				SELECT 
+					card_acceptor_term_id as Terminal,
+					card_acceptor_id_code as Afiliado,
+					card_acceptor_name_loc as Nombre,
+					Serial_Equipo
+				FROM
+					(SELECT distinct
+						card_acceptor_term_id , 
+						card_acceptor_id_code , 
+						card_acceptor_name_loc, 
+						left(right(source_node_additional_data, 19), 9) as Serial_Equipo
+						FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
+					WHERE  
+						card_acceptor_name_loc  is not null and card_acceptor_id_code = 720000121
+				) AS a
 			Group by card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo')
 		`;
 
