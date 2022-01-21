@@ -65,33 +65,15 @@ const saveUser = async () => {
 		data: [
 			{
 				//id 1
-				numA: 720015002,
+				numA: 720000121,
 				userId: 1,
 				ccId: 1,
 			},
 			{
 				//id 2
 				numA: 720015003,
-				userId: 1,
+				userId: 2,
 				ccId: 2,
-			},
-			{
-				//id 3
-				numA: 720015004,
-				userId: 1,
-				ccId: 3,
-			},
-			{
-				//id 4
-				numA: 820015003,
-				userId: 2,
-				ccId: 4,
-			},
-			{
-				//id 5
-				numA: 820015004,
-				userId: 2,
-				ccId: 5,
 			},
 		],
 	});
