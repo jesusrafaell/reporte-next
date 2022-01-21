@@ -10,7 +10,7 @@ const { serverRuntimeConfig } = getConfig();
 const { server, port, db, username, password } = serverRuntimeConfig;
 
 const sqlConfig = {
-	server: server,
+	server: process.env.HOST_MAIN,
 	port: Number(port),
 	database: 'tm_trans_base',
 	user: username,
