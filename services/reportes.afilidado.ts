@@ -15,7 +15,7 @@ async function getTerminals(user: User) {
 	try {
 		const res = await useAxios.get(`/api/reportes/terminales/${user.numAfiliado}`);
 		console.log('repote', res.data);
-		return [];
+		return res.data.terminales;
 	} catch (err: any) {
 		console.log(err.response);
 		const data = err.response?.data;
