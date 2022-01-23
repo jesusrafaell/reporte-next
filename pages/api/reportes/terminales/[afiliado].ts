@@ -4,7 +4,6 @@ import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
 
-import { Prisma } from '@prisma/client';
 import { Terminal } from '@/interfaces/reportes/terminals';
 
 const { serverRuntimeConfig } = getConfig();
@@ -29,48 +28,46 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!afiliado) return res.status(400).json({ message: 'Es necesario un numero de afiliado', code: 400 });
 	try {
 		console.log('sqlconfig', sqlConfig);
-		const connection: any = await sql.connect(sqlConfig);
+		/*
+		await sql.connect(sqlConfig);
 		console.log('conection ok');
 		const response: Terminal[] = await prisma.$queryRawUnsafe(`
 			SELECT * FROM OPENQUERY([PRUEBA_7218], '
-				SELECT 
-					card_acceptor_term_id as terminal,
-					card_acceptor_id_code as afiliado,
-					card_acceptor_name_loc as nombre,
-					Serial_Equipo as serial
+				SELECT DISTINCT
+					card_acceptor_term_id AS terminal,
+					card_acceptor_id_code AS afiliado
 				FROM
-					(SELECT distinct
+					(SELECT DISTINCT
 						card_acceptor_term_id , 
 						card_acceptor_id_code , 
 						card_acceptor_name_loc, 
-						left(right(source_node_additional_data, 19), 9) as Serial_Equipo
+						LEFT(right(source_node_additional_data, 19), 9) AS Serial_Equipo
 						FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
 					WHERE  
-						card_acceptor_name_loc  is not null and card_acceptor_id_code = ${afiliado}
+						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = ${afiliado}
 				) AS a
-				Group by card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo
+				GROUP BY card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo
 			')
 		`);
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ningun reporte', code: 401 };
+		*/
 
 		const resAux: Terminal[] = [
 			{
 				terminal: '38005389',
 				afiliado: '000000720000121',
-				nombre: 'JARDIN PRADOS DEL 0121 CARACAS        VE',
-				serial: '031850412',
 			},
 			{
-				terminal: '38005389',
+				terminal: '38005387',
 				afiliado: '000000720000121',
-				nombre: 'JARDIN PRADOS DEL ESTE CARACAS        VE',
-				serial: '031850412',
 			},
 		];
 
-		return res.status(200).json({ terminales: resAux });
+		setTimeout(() => {
+			return res.status(200).json({ terminales: resAux });
+		}, 2000);
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

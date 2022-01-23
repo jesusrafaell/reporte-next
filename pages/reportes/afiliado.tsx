@@ -83,4 +83,4 @@ function Afiliado(): JSX.Element {
 	);
 }
 
-export default withProtected(Afiliado);
+export default Afiliado;
