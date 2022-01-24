@@ -9,44 +9,66 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 interface Column {
-	id: 'email' | 'idenNumCC' | 'numA' | 'name' | 'idenNumCC';
+	id: string;
 	label: string;
 	minWidth?: number;
-	align?: 'right';
+	align?: 'right' | 'center' | 'left';
 	format?(row: any): string;
 	valueFormatter?: (value: any) => string;
 }
 
-const columns: Column[] = [
-	{ id: 'email', label: 'Email', minWidth: 170 },
+let columns: Column[] = [
 	{
-		id: 'idenNumCC',
-		label: 'RifCliente',
+		id: 'nroTerminal',
+		label: 'Nro. de Terminal',
+		minWidth: 200,
+		align: 'left',
+	},
+	{
+		id: 'nroLote',
+		label: 'Nro. de Lote',
 		minWidth: 100,
+		/*
 		format: (row: any) => {
 			return `${row?.idenTUser}${row?.identNum}`;
 		},
+		*/
 	},
 	{
-		id: 'numA',
-		label: 'Nro Afiliado',
-		minWidth: 170,
-		align: 'right',
+		id: 'origin',
+		label: 'Origen',
+		minWidth: 100,
+		align: 'center',
 	},
 	{
-		id: 'name',
-		label: 'Nombre Comercio',
-		minWidth: 170,
-		align: 'right',
+		id: 'pan',
+		label: 'Pan',
+		minWidth: 200,
+		align: 'center',
 	},
 	{
-		id: 'idenNumCC',
-		label: 'Rif Comercio',
+		id: 'fecha',
+		label: 'Fecha',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'nroReferencia',
+		label: 'Nro. Referencia',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'autCodigo',
+		label: 'Autoriz. Codigo',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'montoBs',
+		label: 'Monto Bs.',
 		minWidth: 170,
 		align: 'right',
-		format: (row: any) => {
-			return `${row?.idenTCC}${row?.idenNumCC}`;
-		},
 	},
 ];
 
@@ -99,7 +121,6 @@ export default function CustomTablePagination({ rows }: any) {
 									{columns.map((column: Column, index: number) => {
 										let value = row[column.id];
 										if (column.format) value = column.format(row);
-										console.log(value);
 										return (
 											<TableCell key={index} align={column.align}>
 												{value}

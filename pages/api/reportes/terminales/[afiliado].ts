@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!afiliado) return res.status(400).json({ message: 'Es necesario un numero de afiliado', code: 400 });
 	try {
 		console.log('sqlconfig', sqlConfig);
-		/*
 		await sql.connect(sqlConfig);
 		console.log('conection ok');
 		const response: Terminal[] = await prisma.$queryRawUnsafe(`
@@ -52,7 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ningun reporte', code: 401 };
-		*/
 
 		const resAux: Terminal[] = [
 			{
@@ -66,7 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		];
 
 		setTimeout(() => {
-			return res.status(200).json({ terminales: resAux });
+			return res.status(200).json({ terminales: response });
 		}, 2000);
 	} catch (err) {
 		console.log(err);

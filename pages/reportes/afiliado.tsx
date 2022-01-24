@@ -11,16 +11,46 @@ import { useContext } from 'react';
 import AuthContext from '@/stores/authContext';
 import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 import { Terminal } from '@/interfaces/reportes/terminals';
+import LinearWithValueLabel from '@/components/progress/linearLabel';
+
+const rows = [
+	{
+		nroTerminal: 38005389,
+		nroLote: '0343',
+		origin: 'Debito',
+		pan: 6012888274999615,
+		fecha: '1/10/2021',
+		hora: '07:44:50.66',
+		nroReferencia: 1037724947,
+		autCodigo: 764529,
+		montoBs: 0.01,
+	},
+	{
+		nroTerminal: 38005389,
+		nroLote: '0343',
+		origin: 'Debito',
+		pan: 6012886190440946,
+		fecha: '1/10/2021',
+		hora: '08:13:14.46',
+		nroReferencia: 1037725808,
+		autCodigo: 832793,
+		montoBs: 34.0,
+	},
+];
 
 function Afiliado(): JSX.Element {
-	const { user, logout } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
+	const [progress, setProgress] = useState<number>(0);
 
 	const [data, setData] = useState<any[]>([]);
 	const [terminales, setTerminales] = useState<Terminal[]>([]);
 	const [terminal, setTerminal] = useState<Terminal | null>(null);
 
 	const getTransFromTermianl = async () => {
-		console.log(terminal);
+		if (terminal) {
+			console.log(terminal);
+			setData(rows);
+		}
 	};
 
 	const preData = async () => {
@@ -28,7 +58,10 @@ function Afiliado(): JSX.Element {
 			const res: any = await reporte.getTerminals(user);
 			if (res) {
 				console.log('res data', res);
-				setTerminales(res);
+				setProgress(100);
+				setTimeout(() => {
+					setTerminales(res);
+				}, 200);
 			}
 		}
 	};
@@ -49,6 +82,7 @@ function Afiliado(): JSX.Element {
 									id='id-box-terminals'
 									onChange={(event, value: Terminal | null) => {
 										setTerminal(value);
+										setData([]);
 									}}
 									options={terminales}
 									value={terminal}
@@ -58,25 +92,37 @@ function Afiliado(): JSX.Element {
 								/>
 							</Grid>
 							<Grid item sx={{ mt: 2 }}>
-								<Tooltip title='Buscar transacciones aprobadas'>
-									<Button
-										disabled={terminal ? false : true}
-										type='submit'
-										onClick={getTransFromTermianl}
-										variant='contained'
-										sx={{ mt: 2, mb: 1 }}>
+								<Button
+									disabled={terminal ? false : true}
+									type='submit'
+									onClick={getTransFromTermianl}
+									variant='contained'
+									sx={{ mt: 2, mb: 1 }}>
+									<Tooltip title='Buscar transacciones aprobadas'>
 										<SearchIcon />
-									</Button>
-								</Tooltip>
+									</Tooltip>
+								</Button>
 							</Grid>
 							<Grid item xs={8}></Grid>
 						</Grid>
 						<Grid item xs={12}>
-							{/*data.length ? <CustomTablePagination rows={data} /> : null*/}
+							{data.length ? <CustomTablePagination rows={data} /> : null}
 						</Grid>
 					</>
 				) : (
-					<h1>loading</h1>
+					<div
+						style={{
+							marginTop: '3rem',
+							width: '400px',
+							position: 'absolute',
+							marginLeft: 'auto',
+							marginRight: 'auto',
+							left: 0,
+							right: 0,
+							textAlign: 'center',
+						}}>
+						<LinearWithValueLabel progress={progress} setProgress={setProgress} />
+					</div>
 				)}
 			</Container>
 		</Layout>
