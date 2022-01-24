@@ -9,11 +9,13 @@ const { serverRuntimeConfig } = getConfig();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	//const { query } = req.body as { query: string };
+	console.log('bug1');
 	if (req.method !== 'POST') {
 		//return res.status(400).json({ message: 'Metodo invalido en Tranred' });
 		return res.redirect(302, '/');
 	}
 	try {
+		console.log('bug1');
 		const user: any = await prisma.user.findUnique({
 			where: {
 				email: req.body.email,
@@ -24,6 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 		});
 
+		console.log('bug2');
 		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
 
 		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
@@ -35,6 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const token: string = createToken(id);
 
+		console.log('bug3');
 		const resUser = {
 			email: dataUser.email,
 			identType: dataUser.identType.name,

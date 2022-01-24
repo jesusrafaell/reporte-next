@@ -32,6 +32,7 @@ export default function LinearWithValueLabel({ progress, setProgress }: Props) {
 		return () => {
 			clearInterval(timer);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
