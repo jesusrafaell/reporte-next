@@ -4,7 +4,7 @@ import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
 
-import { Terminal } from '@/interfaces/reportes/terminals';
+import { Terminal } from '@/interfaces/reportes/reporte';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		//console.log('sqlconfig', sqlConfig);
 		await sql.connect(sqlConfig);
 		//console.log('conection ok');
-		const response: Terminal[] = await prisma.$queryRawUnsafe(`
+		const response: Terminal[] | [] = await prisma.$queryRawUnsafe(`
 			SELECT * FROM OPENQUERY([PRUEBA_7218], '
 				SELECT DISTINCT
 					card_acceptor_term_id AS terminal,

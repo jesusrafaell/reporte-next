@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { DateTime } from 'luxon';
 
 interface Column {
 	id: string;
@@ -18,14 +19,16 @@ interface Column {
 }
 
 let columns: Column[] = [
+	/*
 	{
-		id: 'nroTerminal',
+		id: 'terminal',
 		label: 'Nro. de Terminal',
 		minWidth: 200,
 		align: 'left',
 	},
+	*/
 	{
-		id: 'nroLote',
+		id: 'lote',
 		label: 'Nro. de Lote',
 		minWidth: 100,
 		/*
@@ -35,7 +38,7 @@ let columns: Column[] = [
 		*/
 	},
 	{
-		id: 'origin',
+		id: 'origen',
 		label: 'Origen',
 		minWidth: 100,
 		align: 'center',
@@ -51,21 +54,30 @@ let columns: Column[] = [
 		label: 'Fecha',
 		minWidth: 170,
 		align: 'center',
+		format: (row: any) => {
+			return DateTime.fromISO(row?.fecha.toString()).toFormat('dd/LL/yyyy').toLocaleString();
+		},
 	},
 	{
-		id: 'nroReferencia',
+		id: 'referencia',
 		label: 'Nro. Referencia',
 		minWidth: 170,
 		align: 'center',
 	},
 	{
-		id: 'autCodigo',
+		id: 'authoriz',
 		label: 'Autoriz. Codigo',
 		minWidth: 170,
 		align: 'center',
 	},
 	{
-		id: 'montoBs',
+		id: 'tp_transaction',
+		label: 'Tipo de transaccion',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'monto',
 		label: 'Monto Bs.',
 		minWidth: 170,
 		align: 'right',
@@ -87,7 +99,7 @@ function createData(name: string, code: string, population: number, size: number
 
 export default function CustomTablePagination({ rows }: any) {
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
@@ -100,7 +112,7 @@ export default function CustomTablePagination({ rows }: any) {
 
 	return (
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-			<TableContainer sx={{ maxHeight: 400 }}>
+			<TableContainer sx={{ maxHeight: 500 }}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow>
@@ -134,7 +146,7 @@ export default function CustomTablePagination({ rows }: any) {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 25, 100]}
+				rowsPerPageOptions={[25, 100, 200]}
 				labelRowsPerPage={'Lineas por Pagina'}
 				component='div'
 				count={rows.length}

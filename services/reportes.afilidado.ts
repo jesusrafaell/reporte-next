@@ -1,5 +1,5 @@
 import useAxios from '@/config';
-import { Terminal } from '@/interfaces/reportes/terminals';
+import { Terminal } from '@/interfaces/reportes/reporte';
 import { User } from '@/stores/authContext';
 import { sessionExpired } from '@/utilis/sweetalert-auth';
 import { validSession } from '@/validation/session';

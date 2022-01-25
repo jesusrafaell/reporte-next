@@ -10,7 +10,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useContext } from 'react';
 import AuthContext from '@/stores/authContext';
 import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
-import { Terminal } from '@/interfaces/reportes/terminals';
+import { Terminal, Transaction } from '@/interfaces/reportes/reporte';
 import LinearWithValueLabel from '@/components/progress/linearLabel';
 
 const rows = [
@@ -41,16 +41,30 @@ const rows = [
 function Afiliado(): JSX.Element {
 	const { user } = useContext(AuthContext);
 	const [progress, setProgress] = useState<number>(0);
+	const [progressTrans, setProgressTrans] = useState<number>(0);
 
-	const [data, setData] = useState<any[]>([]);
 	const [terminales, setTerminales] = useState<Terminal[]>([]);
 	const [terminal, setTerminal] = useState<Terminal | null>(null);
 
+	const [trans, setTrans] = useState<Transaction[] | []>([]);
+	const [loadTrans, setLoadTrans] = useState<boolean>(false);
+
 	const getTransFromTermianl = async () => {
+		setTrans([]);
+		setLoadTrans(true);
 		if (terminal) {
-			const res: any = await reporte.getTrans(Number(terminal.terminal));
-			console.log(res);
-			setData(rows);
+			const res = await reporte.getTrans(Number(terminal.terminal));
+			if (res.code) {
+				console.log('error api trans');
+				return;
+			}
+			setProgressTrans(100);
+			setTimeout(() => {
+				setTrans(res);
+				setProgressTrans(0);
+				setLoadTrans(false);
+				console.log(res);
+			}, 200);
 		}
 	};
 
@@ -78,12 +92,20 @@ function Afiliado(): JSX.Element {
 					<>
 						<Grid container sx={{ mt: 3 }} spacing={2}>
 							<Grid item sx={{ mt: 3, ml: 4 }}>
+								<TextField
+									id='id-num-afiliado'
+									label='Nro. Afiliado'
+									value={user?.numAfiliado}
+									sx={{ width: 200, mr: '5rem' }}
+									disabled
+								/>
+							</Grid>
+							<Grid item sx={{ mt: 3, ml: 4 }}>
 								<Autocomplete
 									disablePortal
 									id='id-box-terminals'
 									onChange={(event, value: Terminal | null) => {
 										setTerminal(value);
-										setData([]);
 									}}
 									options={terminales}
 									value={terminal}
@@ -104,11 +126,28 @@ function Afiliado(): JSX.Element {
 									</Tooltip>
 								</Button>
 							</Grid>
-							<Grid item xs={8}></Grid>
 						</Grid>
-						<Grid item xs={12}>
-							{data.length ? <CustomTablePagination rows={data} /> : null}
-						</Grid>
+						{loadTrans || trans.length ? (
+							<Grid item xs={12} sx={{ mt: 5 }}>
+								{trans.length ? (
+									<CustomTablePagination rows={trans} />
+								) : (
+									<div
+										style={{
+											marginTop: '3rem',
+											width: '400px',
+											position: 'absolute',
+											marginLeft: 'auto',
+											marginRight: 'auto',
+											left: 0,
+											right: 0,
+											textAlign: 'center',
+										}}>
+										<LinearWithValueLabel progress={progressTrans} setProgress={setProgressTrans} />
+									</div>
+								)}
+							</Grid>
+						) : null}
 					</>
 				) : (
 					<div

@@ -4,7 +4,7 @@ import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
 
-import { Terminal } from '@/interfaces/reportes/terminals';
+import { Terminal, Transaction } from '@/interfaces/reportes/reporte';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -30,15 +30,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		//console.log('sqlconfig', sqlConfig);
 		await sql.connect(sqlConfig);
 		console.log('conection ok');
-		const response: any = await prisma.$queryRawUnsafe(`
+		const response: Transaction[] | [] = await prisma.$queryRawUnsafe(`
       SELECT * FROM OPENQUERY([PRUEBA_7218], '
         SELECT 
           right(card_acceptor_id_code, 9) as afiliado, 
           card_acceptor_term_id as terminal, 
-          right(left(source_node_additional_data, 10), 4) as Lote, 
+          right(left(source_node_additional_data, 10), 4) as lote, 
           case sink_node 
-            WHEN ''sktandem'' THEN ''CrÃ©dito''
-            WHEN ''sktandem1'' THEN ''Tebca''  ELSE ''DÃ©bito'' END origen, 
+            WHEN ''sktandem'' THEN ''Credito''
+            WHEN ''sktandem1'' THEN ''Tebca''  ELSE ''Debito'' END origen, 
             LEFT(pan,6) + ''****'' + right(pan,4) as pan,
           isnull(isnull(in_req,in_adv),isnull(in_rev,in_recon_adv)) fecha, 
           ret_ref_no AS referencia, 
@@ -46,22 +46,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           case msg_type
             WHEN 512 THEN ''Compra''
             WHEN 1312 THEN ''Cierre_Lote''   
-            WHEN 1056 THEN ''Reverso'' END ''TP_TransacciÃ³n'',
+            WHEN 1056 THEN ''Reverso'' END ''tp_transaction'',
           CAST(convert(money, source_node_amount_requested/100) as varchar) monto  
           FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
-          WHERE 
-            rsp_code_req_rsp = ''00'' 
-            AND 
-            card_acceptor_term_id = ${terminal} 
-            AND (
-              in_req between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or 
-              in_rev between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or
-              in_recon_adv between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000''
-            )
+          WHERE rsp_code_req_rsp = ''00'' and card_acceptor_term_id = ${terminal} AND 
+            (in_req between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or 
+            in_rev between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or
+            in_recon_adv between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'')
           ORDER BY tran_nr
       ');
 		`);
-		console.log(response);
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ninguna transaccion', code: 400 };
