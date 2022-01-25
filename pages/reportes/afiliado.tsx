@@ -48,7 +48,8 @@ function Afiliado(): JSX.Element {
 
 	const getTransFromTermianl = async () => {
 		if (terminal) {
-			console.log(terminal);
+			const res: any = await reporte.getTrans(Number(terminal.terminal));
+			console.log(res);
 			setData(rows);
 		}
 	};

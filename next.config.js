@@ -4,9 +4,9 @@ module.exports = {
 	swcMinify: true,
 	serverRuntimeConfig: {
 		secret: 'THIS IS MY SECRET TOKEN, TEST123',
-		server: process.env.HOST,
+		host: process.env.HOST,
 		port: process.env.PORT,
-		db: process.env.DATABASE,
+		dbName: process.env.DATABASE,
 		username: process.env.USER,
 		password: process.env.PASSWORD,
 	},
