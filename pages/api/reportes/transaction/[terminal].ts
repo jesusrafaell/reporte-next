@@ -23,13 +23,27 @@ const sqlConfig: any = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	const terminal: number = Number(req.query.terminal);
-	if (!terminal) return res.status(400).json({ message: 'Es necesario un numero de Terminal', code: 400 });
+	if (!req.query.terminal) {
+		return res.status(400).json({ message: 'Es necesario un numero de Terminal', code: 400 });
+	}
+
+	const { terminal, dateInit, dateEnd } = JSON.parse(req.query.terminal as string);
+
+	if (!terminal || !dateInit || !dateEnd)
+		return res.status(400).json({ message: 'Es necesario un numero de Terminal y un rango de fecha', code: 400 });
+
+	const auxDateInit = new Date(dateInit);
+	const auxDateEnd = new Date(dateEnd);
+
+	let fechaInicio: string = `${auxDateInit.getFullYear()}-${auxDateInit.getMonth() + 1}-${auxDateInit.getDate()}`;
+	let fechaFin: string = `${auxDateEnd.getFullYear()}-${auxDateEnd.getMonth() + 1}-${auxDateEnd.getDate()}`;
+
 	try {
-		console.log('terminal', terminal);
-		//console.log('sqlconfig', sqlConfig);
 		await sql.connect(sqlConfig);
+
 		console.log('conection ok');
+		console.log(fechaInicio, fechaFin);
+
 		const response: Transaction[] | [] = await prisma.$queryRawUnsafe(`
       SELECT * FROM OPENQUERY([PRUEBA_7218], '
         SELECT 
@@ -50,12 +64,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           CAST(convert(money, source_node_amount_requested/100) as varchar) monto  
           FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
           WHERE rsp_code_req_rsp = ''00'' and card_acceptor_term_id = ${terminal} AND 
-            (in_req between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or 
-            in_rev between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'' or
-            in_recon_adv between ''2021-10-01 00:00:00.000'' and ''2021-10-02 00:00:00.000'')
+            (in_req between ''${fechaInicio} 00:00:00.000'' and ''${fechaFin} 00:00:00.000'' or 
+            in_rev between ''${fechaInicio} 00:00:00.000'' and ''${fechaFin} 00:00:00.000'' or
+            in_recon_adv between ''${fechaInicio} 00:00:00.000'' and ''${fechaFin} 00:00:00.000'')
           ORDER BY tran_nr
       ');
 		`);
+		console.log('res ok');
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ninguna transaccion', code: 400 };

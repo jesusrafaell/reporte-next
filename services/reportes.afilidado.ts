@@ -35,10 +35,16 @@ async function getTerminals(user: User) {
 	}
 }
 
-async function getTrans(numTerminal: number) {
+interface DataQuery {
+	terminal: number;
+	dateInit: Date;
+	dateEnd: Date;
+}
+
+async function getTrans(data: DataQuery) {
 	try {
-		console.log(numTerminal);
-		const res = await useAxios.get(`/api/reportes/transaction/${numTerminal}`);
+		const terminal = JSON.stringify(data);
+		const res = await useAxios.get(`/api/reportes/transaction/${terminal}`);
 		console.log('repote', res.data);
 		return res.data.terminales;
 	} catch (err: any) {
