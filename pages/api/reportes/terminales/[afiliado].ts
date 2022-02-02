@@ -4,15 +4,15 @@ import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
 
-import { Terminal } from '@/interfaces/reportes/terminals';
+import { Terminal } from '@/interfaces/reportes/reporte';
 
 const { serverRuntimeConfig } = getConfig();
 
-const { server, port, db, username, password } = serverRuntimeConfig;
+const { host, dbName, username, password } = serverRuntimeConfig;
 
 const sqlConfig: any = {
-	server: '10.198.72.31',
-	database: 'tranredconsulta',
+	server: host,
+	database: dbName,
 	user: username,
 	password: password,
 	options: {
@@ -20,18 +20,16 @@ const sqlConfig: any = {
 		trustServerCertificate: true,
 		//change to true for local dev / self-signed certs
 	},
-	//port: Number(port),
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const afiliado: number = Number(req.query.afiliado);
 	if (!afiliado) return res.status(400).json({ message: 'Es necesario un numero de afiliado', code: 400 });
 	try {
-		console.log('sqlconfig', sqlConfig);
-		/*
+		//console.log('sqlconfig', sqlConfig);
 		await sql.connect(sqlConfig);
-		console.log('conection ok');
-		const response: Terminal[] = await prisma.$queryRawUnsafe(`
+		//console.log('conection ok');
+		const response: Terminal[] | [] = await prisma.$queryRawUnsafe(`
 			SELECT * FROM OPENQUERY([PRUEBA_7218], '
 				SELECT DISTINCT
 					card_acceptor_term_id AS terminal,
@@ -51,8 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		`);
 
 		//let terminales = response.recordset;
-		if (!response.length) throw { message: 'No se encontro ningun reporte', code: 401 };
-		*/
+		if (!response.length) throw { message: 'No se encontro ningun terminal', code: 401 };
 
 		const resAux: Terminal[] = [
 			{
@@ -66,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		];
 
 		setTimeout(() => {
-			return res.status(200).json({ terminales: resAux });
+			return res.status(200).json({ terminales: response });
 		}, 2000);
 	} catch (err) {
 		console.log(err);

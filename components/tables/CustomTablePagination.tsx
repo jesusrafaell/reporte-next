@@ -7,46 +7,80 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { DateTime } from 'luxon';
 
 interface Column {
-	id: 'email' | 'idenNumCC' | 'numA' | 'name' | 'idenNumCC';
+	id: string;
 	label: string;
 	minWidth?: number;
-	align?: 'right';
+	align?: 'right' | 'center' | 'left';
 	format?(row: any): string;
 	valueFormatter?: (value: any) => string;
 }
 
-const columns: Column[] = [
-	{ id: 'email', label: 'Email', minWidth: 170 },
+let columns: Column[] = [
+	/*
 	{
-		id: 'idenNumCC',
-		label: 'RifCliente',
+		id: 'terminal',
+		label: 'Nro. de Terminal',
+		minWidth: 200,
+		align: 'left',
+	},
+	*/
+	{
+		id: 'lote',
+		label: 'Nro. de Lote',
 		minWidth: 100,
+		/*
 		format: (row: any) => {
 			return `${row?.idenTUser}${row?.identNum}`;
 		},
+		*/
 	},
 	{
-		id: 'numA',
-		label: 'Nro Afiliado',
-		minWidth: 170,
-		align: 'right',
+		id: 'origen',
+		label: 'Origen',
+		minWidth: 100,
+		align: 'center',
 	},
 	{
-		id: 'name',
-		label: 'Nombre Comercio',
-		minWidth: 170,
-		align: 'right',
+		id: 'pan',
+		label: 'Pan',
+		minWidth: 200,
+		align: 'center',
 	},
 	{
-		id: 'idenNumCC',
-		label: 'Rif Comercio',
+		id: 'fecha',
+		label: 'Fecha',
 		minWidth: 170,
-		align: 'right',
+		align: 'center',
 		format: (row: any) => {
-			return `${row?.idenTCC}${row?.idenNumCC}`;
+			return DateTime.fromISO(row?.fecha.toString()).toFormat('dd/LL/yyyy').toLocaleString();
 		},
+	},
+	{
+		id: 'referencia',
+		label: 'Nro. Referencia',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'authoriz',
+		label: 'Autoriz. Codigo',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'tp_transaction',
+		label: 'Tipo de transaccion',
+		minWidth: 170,
+		align: 'center',
+	},
+	{
+		id: 'monto',
+		label: 'Monto Bs.',
+		minWidth: 170,
+		align: 'right',
 	},
 ];
 
@@ -65,7 +99,7 @@ function createData(name: string, code: string, population: number, size: number
 
 export default function CustomTablePagination({ rows }: any) {
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
@@ -78,7 +112,7 @@ export default function CustomTablePagination({ rows }: any) {
 
 	return (
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-			<TableContainer sx={{ maxHeight: 400 }}>
+			<TableContainer sx={{ maxHeight: 500 }}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow>
@@ -99,7 +133,6 @@ export default function CustomTablePagination({ rows }: any) {
 									{columns.map((column: Column, index: number) => {
 										let value = row[column.id];
 										if (column.format) value = column.format(row);
-										console.log(value);
 										return (
 											<TableCell key={index} align={column.align}>
 												{value}
@@ -113,7 +146,7 @@ export default function CustomTablePagination({ rows }: any) {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 25, 100]}
+				rowsPerPageOptions={[25, 100, 200]}
 				labelRowsPerPage={'Lineas por Pagina'}
 				component='div'
 				count={rows.length}
