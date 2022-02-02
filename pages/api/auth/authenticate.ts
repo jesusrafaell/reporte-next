@@ -1,11 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import getConfig from 'next/config';
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
 import createToken from '@/utilis/createToken';
-
-const { serverRuntimeConfig } = getConfig();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	//const { query } = req.body as { query: string };
@@ -20,15 +17,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 			include: {
 				identType: true,
-				afiliado: true,
 			},
 		});
 
 		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
 
+		const { password, id, ...dataUser } = user;
+
+		const afiliado: any = await prisma.afiliado.findMany({
+			where: {
+				userId: id,
+			},
+		});
+
 		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
-		const { password, id, ...dataUser } = user;
 		const validPassword = await bcrypt.compare(req.body.password, password);
 
 		if (!validPassword) throw { message: 'Correo o contraseña contrasena incorrecta', code: 400 };

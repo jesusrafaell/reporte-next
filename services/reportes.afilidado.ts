@@ -1,11 +1,7 @@
 import useAxios from '@/config';
 import { User } from '@/stores/authContext';
-import { sessionExpired } from '@/utilis/sweetalert-auth';
+//import { sessionExpired } from '@/utilis/sweetalert-auth';
 import { validSession } from '@/validation/session';
-import { AxiosResponse } from 'axios';
-import { ValidatorsImpl } from 'express-validator/src/chain';
-
-import Router from 'next/router';
 
 export const reporte = {
 	getTerminals,
