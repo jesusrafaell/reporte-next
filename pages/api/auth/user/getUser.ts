@@ -45,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			numAfiliado: contact.afiliado[0].numA,
 		};
 
-		console.log(resUser);
+		//console.log(resUser);
 
 		return res.status(200).json({ user: resUser, token: newToken });
 	} catch (err) {

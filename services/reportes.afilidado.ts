@@ -12,10 +12,10 @@ export const reporte = {
 async function getTerminals(user: User) {
 	try {
 		const res = await useAxios.get(`/api/reportes/terminales/${user.numAfiliado}`);
-		console.log('repote', res.data);
+		//console.log('repote', res.data);
 		return res.data.terminales;
 	} catch (err: any) {
-		console.log(err.response);
+		//console.log(err.response);
 		const data = err.response?.data;
 
 		//Valid Token invalido //mover de aqui a un validador de session expired
@@ -41,7 +41,7 @@ async function getTrans(data: DataQuery) {
 	try {
 		const terminal = JSON.stringify(data);
 		const res = await useAxios.get(`/api/reportes/transaction/${terminal}`);
-		console.log('repote', res.data);
+		//console.log('repote', res.data);
 		return res.data.terminales;
 	} catch (err: any) {
 		console.log(err.response);

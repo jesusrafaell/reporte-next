@@ -24,7 +24,7 @@ const withToken = (handler: any) => {
 		}
 		let decoded;
 		try {
-			decoded = jwt.verify(token, serverRuntimeConfig.secret);
+			decoded = jwt.verify(token, process.env.secret!);
 		} catch (err: any) {
 			return res.status(401).json({
 				success: false,

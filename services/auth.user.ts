@@ -16,7 +16,7 @@ async function login(user: UserLoginInt) {
 		const res: AxiosResponse<any> = await useAxios.post('/api/auth/authenticate', user);
 		//console.log(res.data.user);
 		setCookies('token', res.data.token);
-		localStorage.setItem('token', res.data.token);
+		//localStorage.setItem('token', res.data.token);
 		successLogin(`${res.data.user.email}`);
 		return res;
 	} catch (err: any) {
@@ -28,7 +28,7 @@ async function login(user: UserLoginInt) {
 async function register(user: UserInt) {
 	try {
 		const res: AxiosResponse<any> = await useAxios.post('/api/auth/register', user);
-		console.log('Register ok', res);
+		//console.log('Register ok', res);
 		Router.push('/auth/login');
 		successRegister();
 	} catch (err: any) {
@@ -46,5 +46,5 @@ async function register(user: UserInt) {
 
 function logout() {
 	removeCookies('token');
-	localStorage.removeItem('token');
+	//localStorage.removeItem('token');
 }

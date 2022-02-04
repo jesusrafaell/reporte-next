@@ -41,8 +41,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		await sql.connect(sqlConfig);
 
-		console.log('conection ok');
-		console.log(fechaInicio, fechaFin);
+		console.log('conection ok (query)');
+		//console.log(fechaInicio, fechaFin);
 
 		const response: Transaction[] | [] = await prisma.$queryRawUnsafe(`
       SELECT * FROM OPENQUERY([PRUEBA_7218], '
@@ -70,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ORDER BY tran_nr
       ');
 		`);
-		console.log('res ok');
+		//console.log('res ok');
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ninguna transaccion', code: 400 };

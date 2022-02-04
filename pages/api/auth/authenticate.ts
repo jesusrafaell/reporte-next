@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const { password, id, contactId, ...dataUser } = user;
 
-		const contact: any = await prisma.contact.findUnique({
+		const contact = await prisma.contact.findUnique({
 			where: {
 				id: contactId,
 			},

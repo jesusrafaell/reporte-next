@@ -9,7 +9,6 @@ export function withProtected(gssp: GetServerSideProps) {
 	return async (ctx: GetServerSidePropsContext) => {
 		const { req, res } = ctx;
 		const token: string = getCookie('token', { req, res }) as string;
-		console.log('hola in auth', token);
 
 		if (!token) {
 			return {

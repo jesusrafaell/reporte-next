@@ -12,8 +12,8 @@ CREATE TABLE [dbo].[IdentType] (
 
 -- CreateTable
 CREATE TABLE [dbo].[User] (
-    [createdAt] DATETIME2 NOT NULL CONSTRAINT [User_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
     [id] INT NOT NULL IDENTITY(1,1),
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [User_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
     [email] NVARCHAR(1000) NOT NULL,
     [password] NVARCHAR(1000) NOT NULL,
     [contactId] INT NOT NULL,
@@ -29,7 +29,8 @@ CREATE TABLE [dbo].[Contact] (
     [email] NVARCHAR(1000) NOT NULL,
     [identTypeId] INT NOT NULL,
     [identNum] NVARCHAR(1000) NOT NULL,
-    CONSTRAINT [Contact_pkey] PRIMARY KEY ([id])
+    CONSTRAINT [Contact_pkey] PRIMARY KEY ([id]),
+    CONSTRAINT [Contact_identTypeId_identNum_key] UNIQUE ([identTypeId],[identNum])
 );
 
 -- CreateTable
@@ -39,7 +40,8 @@ CREATE TABLE [dbo].[Commerce] (
     [idTypeCcId] INT NOT NULL,
     [identNum] NVARCHAR(1000) NOT NULL,
     [createdAt] DATETIME2 NOT NULL CONSTRAINT [Commerce_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT [Commerce_pkey] PRIMARY KEY ([id])
+    CONSTRAINT [Commerce_pkey] PRIMARY KEY ([id]),
+    CONSTRAINT [Commerce_idTypeCcId_identNum_key] UNIQUE ([idTypeCcId],[identNum])
 );
 
 -- CreateTable

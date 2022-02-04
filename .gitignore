@@ -8,7 +8,7 @@
 # testing
 /coverage
 
-migrations
+./prisma/migrations
 
 # next.js
 /.next/

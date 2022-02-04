@@ -6,28 +6,6 @@ const prisma = new PrismaClient();
 const saveUser = async () => {
 	await prisma.identType.createMany({ data: identType });
 
-	//Only for DEV
-	/*
-	await prisma.user.createMany({
-		data: [
-			{
-				//id 1
-				email: 'jesus@correo.com',
-				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
-				identTypeId: 3,
-				identNum: '1234567',
-			},
-			{
-				//id 2
-				email: 'jesus2@correo.com',
-				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
-				identTypeId: 3,
-				identNum: '12345678',
-			},
-		],
-	});
-	*/
-
 	await prisma.contact.createMany({
 		data: [
 			{
@@ -41,6 +19,23 @@ const saveUser = async () => {
 				email: 'jesus2@correo.com',
 				identTypeId: 3,
 				identNum: '12345678',
+			},
+		],
+	});
+
+	await prisma.user.createMany({
+		data: [
+			{
+				//id 1
+				email: 'jesus@correo.com',
+				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
+				contactId: 1,
+			},
+			{
+				//id 2
+				email: 'jesus2@correo.com',
+				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
+				contactId: 2,
 			},
 		],
 	});

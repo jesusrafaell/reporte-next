@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		});
 		if (!saveUser) throw { message: 'Error al registrarte', code: 400 };
 
-		console.log('Register ->', req.method, user);
+		//console.log('Register ->', req.method, user);
 		return res.status(200).json({ saveUser, code: 200 });
 	} catch (err) {
 		console.log(err);

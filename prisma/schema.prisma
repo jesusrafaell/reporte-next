@@ -18,8 +18,8 @@ model IdentType {
 }
 
 model User {
-  createdAt   DateTime @default(now())
   id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
   email       String   @unique
   password    String
   contactId   Int 
@@ -35,6 +35,7 @@ model Contact {
   User        User?
   afiliado    Afiliado[]
   identType   IdentType @relation(fields: [identTypeId], references: [id])
+  @@unique ([identTypeId, identNum])
 }
 
 model Commerce{
@@ -46,6 +47,7 @@ model Commerce{
   //Relations
   afiliado      Afiliado?
   createdAt     DateTime @default(now())
+  @@unique ([idTypeCcId, identNum])
 }
 
 model Afiliado {

@@ -2,6 +2,9 @@
 module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
+	env: {
+		secret: 'THIS IS MY SECRET TOKEN, TEST123',
+	},
 	serverRuntimeConfig: {
 		secret: 'THIS IS MY SECRET TOKEN, TEST123',
 		host: process.env.HOST,

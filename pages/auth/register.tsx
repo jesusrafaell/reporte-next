@@ -185,7 +185,7 @@ export default function Register() {
 							type='submit'
 							fullWidth
 							variant='contained'
-							//disabled={buttonOn}
+							disabled={buttonOn}
 							className={classes.button}
 							sx={{ mt: 3, mb: 2 }}>
 							{name}

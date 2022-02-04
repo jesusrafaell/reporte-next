@@ -33,15 +33,15 @@ export const AuthContextProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<User | null>(null);
 
 	const getDataUser = async () => {
-		console.log('calling useAuth');
+		//console.log('calling useAuth');
 		try {
 			const res = await useAxios.get('/api/auth/user/getUser');
 			const { user, token }: { user: User; token: string } = res.data;
-			localStorage.setItem('token', token);
+			//localStorage.setItem('token', token);
 			setCookies('token', token);
 			setUser(user);
 		} catch (error: any) {
-			console.log('remove Token', error?.response);
+			//console.log('remove Token', error?.response);
 			setUser(null);
 			validSession(error);
 		}
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 	const login = async (user: UserLoginInt): Promise<ObjString | void> => {
 		const res = await authUser.login(user);
 		if (res.status !== 200) {
-			console.log('Error fallo');
+			//console.log('Error fallo');
 			const data = res.response?.data;
 			const resError = {
 				type: 'Error',
