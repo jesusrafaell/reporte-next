@@ -13,7 +13,7 @@ model IdentType {
   id        Int      @id @default(autoincrement())
   name      String 
   //Relations
-  user      User[]
+  contact   Contact[]
   commerce  Commerce[]
 }
 
@@ -22,11 +22,19 @@ model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
   password    String
+  contactId   Int 
+  contact     Contact  @relation(fields: [contactId], references: [id], onUpdate: NoAction)
+}
+
+model Contact {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  email       String
   identTypeId Int
   identNum    String
-  //Relations
-  identType   IdentType @relation(fields: [identTypeId], references: [id])
+  User        User?
   afiliado    Afiliado[]
+  identType   IdentType @relation(fields: [identTypeId], references: [id])
 }
 
 model Commerce{
@@ -41,12 +49,12 @@ model Commerce{
 }
 
 model Afiliado {
-  id        Int      @id @default(autoincrement())
-  numA      Int      @unique
-  userId    Int
-  ccId      Int
+  id          Int      @id @default(autoincrement())
+  numA        Int      @unique
+  contactId   Int
+  ccId        Int
   //Relations
-  user      User     @relation(fields: [userId], references: [id])
-  cc        Commerce @relation(fields: [ccId], references: [id],  onUpdate: NoAction)
-  createdAt DateTime @default(now())
+  contact     Contact  @relation(fields: [contactId], references: [id])
+  cc          Commerce @relation(fields: [ccId], references: [id],  onUpdate: NoAction)
+  createdAt   DateTime @default(now())
 }

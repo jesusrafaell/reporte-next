@@ -12,9 +12,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const user: UserInt = req.body;
 
-		const validUserEmail = await prisma.user.findFirst({
+		const validContact = await prisma.contact.findFirst({
 			where: {
-				OR: [
+				AND: [
 					{
 						email: user.email,
 					},
@@ -26,24 +26,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			},
 		});
 
+		if (!validContact) throw { message: 'Usted no esta afiliado a Tranred', code: 400 };
+
+		const validUserEmail = await prisma.user.findFirst({
+			where: {
+				email: user.email,
+			},
+		});
+
 		if (validUserEmail) throw { message: 'El email o el documento de identidad ya existe', code: 400 };
 
 		// hash password
 		const salt: string = await bcrypt.genSalt(10);
 		req.body.password = await bcrypt.hash(req.body.password, salt);
 
+		const { id } = validContact;
+
 		const saveUser = await prisma.user.create({
 			data: {
 				email: user.email,
 				password: user.password,
-				identTypeId: user.identTypeId,
-				identNum: user.identNum,
+				contactId: id,
 			},
 		});
-		if (!saveUser) throw { message: 'Error al crear el usuario', code: 400 };
+		if (!saveUser) throw { message: 'Error al registrarte', code: 400 };
 
 		console.log('Register ->', req.method, user);
-
 		return res.status(200).json({ saveUser, code: 200 });
 	} catch (err) {
 		console.log(err);

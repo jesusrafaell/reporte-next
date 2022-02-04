@@ -7,6 +7,7 @@ const saveUser = async () => {
 	await prisma.identType.createMany({ data: identType });
 
 	//Only for DEV
+	/*
 	await prisma.user.createMany({
 		data: [
 			{
@@ -20,6 +21,24 @@ const saveUser = async () => {
 				//id 2
 				email: 'jesus2@correo.com',
 				password: '$2b$10$yDWmy/EGvdva4HeNpl5QtefY.v3HfJ2o9aVdiAKCVjALniDGFfTci',
+				identTypeId: 3,
+				identNum: '12345678',
+			},
+		],
+	});
+	*/
+
+	await prisma.contact.createMany({
+		data: [
+			{
+				//id 1
+				email: 'jesus@correo.com',
+				identTypeId: 3,
+				identNum: '1234567',
+			},
+			{
+				//id 2
+				email: 'jesus2@correo.com',
 				identTypeId: 3,
 				identNum: '12345678',
 			},
@@ -66,13 +85,13 @@ const saveUser = async () => {
 			{
 				//id 1
 				numA: 720000121,
-				userId: 1,
+				contactId: 1,
 				ccId: 1,
 			},
 			{
 				//id 2
 				numA: 720015003,
-				userId: 2,
+				contactId: 2,
 				ccId: 2,
 			},
 		],

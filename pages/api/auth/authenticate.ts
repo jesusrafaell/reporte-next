@@ -15,22 +15,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			where: {
 				email: req.body.email,
 			},
-			include: {
-				identType: true,
-			},
 		});
 
 		if (!user) throw { message: 'Correo o Contraseña incorrecta', code: 400 };
 
-		const { password, id, ...dataUser } = user;
+		const { password, id, contactId, ...dataUser } = user;
 
-		const afiliado: any = await prisma.afiliado.findMany({
+		const contact: any = await prisma.contact.findUnique({
 			where: {
-				userId: id,
+				id: contactId,
+			},
+			include: {
+				afiliado: true,
+				identType: true,
 			},
 		});
 
-		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
+		if (!contact) throw { message: 'Usted no esta afiliado a Tranred', code: 400 };
+
+		if (!contact.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
 		const validPassword = await bcrypt.compare(req.body.password, password);
 
@@ -40,9 +43,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const resUser = {
 			email: dataUser.email,
-			identType: dataUser.identType.name,
-			identNum: dataUser.identNum,
-			numAfiliado: user.afiliado[0].numA,
+			identType: contact.identType.name,
+			identNum: contact.identNum,
+			numAfiliado: contact.afiliado[0].numA,
 		};
 
 		return res.status(200).json({ user: resUser, token: token, code: 200 });

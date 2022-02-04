@@ -21,23 +21,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				id: sub,
 			},
 			include: {
-				identType: true,
-				afiliado: true,
+				contact: {
+					include: {
+						afiliado: true,
+						identType: true,
+					},
+				},
 			},
 		});
 
 		if (!user) throw { message: 'Su usuario no existe', code: 400 };
 
-		if (!user.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
+		const { contact, email } = user;
+
+		if (!contact.afiliado.length) throw { message: 'Este usuario no posse un numero de afiliado', code: 400 };
 
 		const newToken: string = createToken(user.id);
 
 		const resUser = {
-			email: user.email,
-			identType: user.identType.name,
-			identNum: user.identNum,
-			numAfiliado: user.afiliado[0].numA,
+			email: email,
+			identType: contact.identType.name,
+			identNum: contact.identNum,
+			numAfiliado: contact.afiliado[0].numA,
 		};
+
+		console.log(resUser);
 
 		return res.status(200).json({ user: resUser, token: newToken });
 	} catch (err) {
