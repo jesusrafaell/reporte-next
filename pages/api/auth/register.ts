@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UserInt } from '@/interfaces/auth/interfaces';
 import prisma from '@/prisma';
 
@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		// hash password
 		const salt: string = await bcrypt.genSalt(10);
-		req.body.password = await bcrypt.hash(req.body.password, salt);
+		user.password = await bcrypt.hash(req.body.password, salt);
 
 		const { id } = validContact;
 
