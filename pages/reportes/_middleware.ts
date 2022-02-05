@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
 	}
 
 	try {
-		let decoded = jwt.verify(token, process.env.secret!);
+		jwt.verify(token, process.env.secret!);
 		return NextResponse.next();
 	} catch (err: any) {
 		//Primero tengo que borrar token si tiene

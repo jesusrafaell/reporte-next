@@ -9,9 +9,9 @@ export const reporte = {
 	getTrans,
 };
 
-async function getTerminals(user: User) {
+async function getTerminals(na: string) {
 	try {
-		const res = await useAxios.get(`/api/reportes/terminales/${user.numAfiliado}`);
+		const res = await useAxios.get(`/api/reportes/terminales/${na}`);
 		//console.log('repote', res.data);
 		return res.data.terminales;
 	} catch (err: any) {
@@ -21,13 +21,16 @@ async function getTerminals(user: User) {
 		//Valid Token invalido //mover de aqui a un validador de session expired
 		validSession(err);
 
-		const resError = {
-			type: 'Error',
-			message: data.message || 'Error: Api',
-			code: data.code || err.response.status || '400',
-		};
-		console.log(resError);
-		return resError;
+		if (err.response?.message) {
+			const resError = {
+				type: 'Error',
+				message: data.message || 'Error: Api',
+				code: data.code || err.response.status || '400',
+			};
+			console.log(resError);
+			return resError;
+		}
+		console.log(err);
 	}
 }
 

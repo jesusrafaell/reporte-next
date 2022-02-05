@@ -40,6 +40,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 			//localStorage.setItem('token', token);
 			setCookies('token', token);
 			setUser(user);
+			//localStorage.setItem('na', user.numAfiliado);
 		} catch (error: any) {
 			//console.log('remove Token', error?.response);
 			setUser(null);

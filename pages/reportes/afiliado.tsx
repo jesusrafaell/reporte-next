@@ -1,27 +1,36 @@
-import { Button, Container, Grid, Tooltip } from '@mui/material';
 import Layout from '@/components/layout/Layout';
-import CustomTablePagination from '@/components/tables/CustomTablePagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { reporte } from '@/services/reportes.afilidado';
-import { withProtected } from '@/middleware/public/withProtected';
-import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+//import { withProtected } from '@/middleware/public/withProtected';
 import { useContext } from 'react';
 import AuthContext from '@/stores/authContext';
-import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 import { Terminal, Transaction } from '@/interfaces/reportes/reporte';
-import LinearWithValueLabel from '@/components/progress/linearLabel';
-import MaterialUIDate from '@/components/dateTime';
 import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
+import { NextPage } from 'next';
+import {
+	Button,
+	Container,
+	FormControl,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+	Tooltip,
+} from '@mui/material';
+import MaterialUIDate from '@/components/dateTime';
+import SearchIcon from '@mui/icons-material/Search';
+import LinearWithValueLabel from '@/components/progress/linearLabel';
+import CustomTablePagination from '@/components/tables/CustomTablePagination';
 
-function Afiliado(): JSX.Element {
+const Afiliado: NextPage = () => {
 	const { user } = useContext(AuthContext);
+
 	const [progress, setProgress] = useState<number>(0);
 	const [progressTrans, setProgressTrans] = useState<number>(0);
 
 	const [terminales, setTerminales] = useState<Terminal[]>([]);
-	const [terminal, setTerminal] = useState<Terminal | null>(null);
+	const [terminal, setTerminal] = useState<string>('');
 
 	const [trans, setTrans] = useState<Transaction[] | []>([]);
 	const [loadTrans, setLoadTrans] = useState<boolean>(false);
@@ -36,9 +45,9 @@ function Afiliado(): JSX.Element {
 		setTrans([]);
 		setLoadTrans(true);
 		setAlert(false);
-		if (terminal && dateInit && dateEnd) {
+		if (dateInit && dateEnd) {
 			const data = {
-				terminal: Number(terminal.terminal),
+				terminal: Number(terminal),
 				dateInit,
 				dateEnd,
 			};
@@ -55,16 +64,15 @@ function Afiliado(): JSX.Element {
 				setTrans(res);
 				setProgressTrans(0);
 				setLoadTrans(false);
-				console.log(res);
+				//console.log(res);
 			}, 200);
 		}
 	};
 
 	const preData = async () => {
-		if (user) {
-			const res: any = await reporte.getTerminals(user);
+		if (user?.numAfiliado) {
+			const res: any = await reporte.getTerminals(user.numAfiliado);
 			if (res) {
-				console.log('res data', res);
 				setProgress(100);
 				setTimeout(() => {
 					setTerminales(res);
@@ -73,8 +81,9 @@ function Afiliado(): JSX.Element {
 		}
 	};
 
-	useSafeLayoutEffect(() => {
+	useEffect(() => {
 		preData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
 	return (
@@ -88,7 +97,7 @@ function Afiliado(): JSX.Element {
 									<TextField
 										id='id-num-afiliado'
 										label='Nro. Afiliado'
-										value={user?.numAfiliado}
+										value={user?.numAfiliado || ''}
 										sx={{ width: 200, mr: '5rem' }}
 										disabled
 									/>
@@ -102,18 +111,27 @@ function Afiliado(): JSX.Element {
 									/>
 								</Grid>
 								<Grid item sx={{ mt: 3, ml: 4 }}>
-									<Autocomplete
-										disablePortal
-										id='id-box-terminals'
-										onChange={(event, value: Terminal | null) => {
-											setTerminal(value);
-										}}
-										options={terminales}
-										value={terminal}
-										getOptionLabel={(option: Terminal) => option.terminal || ''}
-										sx={{ width: 250 }}
-										renderInput={(params) => <TextField {...params} label='Terminal' />}
-									/>
+									<FormControl
+										style={{
+											width: '10rem',
+										}}>
+										<InputLabel id='demo-simple-select-label'>Terminal</InputLabel>
+										<Select
+											labelId='demo-simple-select-label'
+											id='demo-simple-select'
+											value={terminal}
+											onChange={(event: any) => {
+												setTerminal(event.target.value);
+											}}
+											name='termianl'
+											label='Terminales'>
+											{terminales.map((item: Terminal, index: number) => (
+												<MenuItem key={index} value={item.terminal}>
+													{item.terminal}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
 								</Grid>
 								<Grid item sx={{ mt: 2 }}>
 									<Button
@@ -121,7 +139,7 @@ function Afiliado(): JSX.Element {
 										type='submit'
 										onClick={getTransFromTermianl}
 										variant='contained'
-										sx={{ mt: 2, mb: 1 }}>
+										sx={{ mt: 2, mb: 1, ml: 2 }}>
 										<Tooltip title='Buscar transacciones aprobadas'>
 											<SearchIcon />
 										</Tooltip>
@@ -173,6 +191,6 @@ function Afiliado(): JSX.Element {
 			</>
 		</Layout>
 	);
-}
+};
 
 export default Afiliado;

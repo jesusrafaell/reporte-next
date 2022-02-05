@@ -23,10 +23,10 @@ const sqlConfig: any = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	const afiliado: number = Number(req.query.afiliado);
+	const afiliado = req.query.afiliado;
 	if (!afiliado) return res.status(400).json({ message: 'Es necesario un numero de afiliado', code: 400 });
 	try {
-		//console.log('sqlconfig', sqlConfig);
+		console.log('connect ok afiliado');
 		await sql.connect(sqlConfig);
 		//console.log('conection ok');
 		const response: Terminal[] | [] = await prisma.$queryRawUnsafe(`
@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						LEFT(right(source_node_additional_data, 19), 9) AS Serial_Equipo
 						FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
 					WHERE  
-						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = ${afiliado}
+						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = ${Number(afiliado)}
 				) AS a
 				GROUP BY card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo
 			')
@@ -50,17 +50,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ningun terminal', code: 401 };
-
-		const resAux: Terminal[] = [
-			{
-				terminal: '38005389',
-				afiliado: '000000720000121',
-			},
-			{
-				terminal: '38005387',
-				afiliado: '000000720000121',
-			},
-		];
 
 		setTimeout(() => {
 			return res.status(200).json({ terminales: response });

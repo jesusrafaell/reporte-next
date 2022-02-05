@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		await sql.connect(sqlConfig);
 
-		console.log('conection ok (query)');
+		console.log('conection ok terminales');
 		//console.log(fechaInicio, fechaFin);
 
 		const response: Transaction[] | [] = await prisma.$queryRawUnsafe(`

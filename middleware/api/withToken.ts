@@ -11,10 +11,7 @@ interface Handler {
 
 const withToken = (handler: any) => {
 	return async (req: NextApiRequest, res: NextApiResponse) => {
-		let token;
-		if (req.headers.authorization) {
-			token = req.headers.authorization;
-		}
+		const token = req.cookies.token;
 
 		if (!token) {
 			return res.status(401).json({
