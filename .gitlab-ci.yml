@@ -24,10 +24,8 @@ build:
     - qa
   script:
   - node -v
-  - yarn install
-  - REACT_APP_APIURL=10.198.73.15:4040
-  - REACT_APP_PSWD=$REACT_APP_PSWD
-  - yarn build 
+  - npm install
+  - npm run build
   stage: build
   artifacts:
     paths:
@@ -39,6 +37,8 @@ deploy:
     - qa
   script:
     - sudo scp  -i ~/.ssh/key.pem  -r build/* $USUARIO@$IP_REMOTEQA:$DOCUMENT_ROOT
+    - sudo scp  -i ~/.ssh/key.pem   $USUARIO@$IP_REMOTEQA " cd $DOCUMENT_ROOT && sudo pm2 restart puntoconsultatranred  "
+
 
   stage: deploy
   dependencies:
@@ -50,9 +50,6 @@ build_pro:
     - main
   script:
   - node -v
-  - yarn install
-  - REACT_APP_APIURL=10.198.71.36:4040
-  - yarn build
   stage: build
   artifacts:
     paths:
