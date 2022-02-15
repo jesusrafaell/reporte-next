@@ -29,7 +29,7 @@ build:
   stage: build
   artifacts:
     paths:
-      -  
+      - prueba/ 
 
 deploy:
   stage: deploy
