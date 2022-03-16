@@ -63,8 +63,8 @@ export const AuthContextProvider = ({ children }: Props) => {
 			const data = res.response?.data;
 			const resError = {
 				type: 'Error',
-				message: data.message || 'Error: Api',
-				code: data.code || res.response.status || '400',
+				message: data?.message || 'Error: Api',
+				code: data?.code || res?.response?.status || '400',
 			};
 			return resError;
 		}
