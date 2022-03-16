@@ -11,6 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.redirect(302, '/');
 	}
 	try {
+		console.log('x', prisma.user);
 		const user: any = await prisma.user.findUnique({
 			where: {
 				email: req.body.email,
