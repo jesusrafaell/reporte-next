@@ -1,0 +1,62 @@
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  // change to `go run github.com/prisma/prisma-client-go` for Go
+  provider = "prisma-client-js"
+}
+
+model IdentType {
+  createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String 
+  //Relations
+  contact   Contact[]
+  commerce  Commerce[]
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  email       String   @unique
+  password    String
+  contactId   Int 
+  contact     Contact  @relation(fields: [contactId], references: [id], onUpdate: NoAction)
+}
+
+model Contact {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  email       String
+  identTypeId Int
+  identNum    String
+  User        User?
+  afiliado    Afiliado[]
+  identType   IdentType @relation(fields: [identTypeId], references: [id])
+  @@unique ([identTypeId, identNum])
+}
+
+model Commerce{
+  id            Int      @id @default(autoincrement())
+  name          String 
+  identTypeCc   IdentType @relation(fields: [idTypeCcId], references: [id])
+  idTypeCcId    Int
+  identNum      String
+  //Relations
+  afiliado      Afiliado?
+  createdAt     DateTime @default(now())
+  @@unique ([idTypeCcId, identNum])
+}
+
+model Afiliado {
+  id          Int      @id @default(autoincrement())
+  numA        Int      @unique
+  contactId   Int
+  ccId        Int
+  //Relations
+  contact     Contact  @relation(fields: [contactId], references: [id])
+  cc          Commerce @relation(fields: [ccId], references: [id],  onUpdate: NoAction)
+  createdAt   DateTime @default(now())
+}

@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"lib": ["dom", "dom.iterable", "esnext", "es6"],
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
@@ -15,15 +15,8 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
-		"emitDecoratorMetadata": true,
-		"sourceMap": true,
-		"outDir": "dist",
-		"baseUrl": "./",
-		"paths": {
-			"@/*": ["./*"],
-			"@*": ["./components/@*"]
-		}
+		"emitDecoratorMetadata": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.ts"],
-	"exclude": ["node_modules", "prisma/db/*"]
+	"exclude": ["node_modules"]
 }

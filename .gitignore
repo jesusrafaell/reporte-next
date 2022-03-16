@@ -8,13 +8,15 @@
 # testing
 /coverage
 
+./prisma/migrations
+
 # next.js
 /.next/
 /out/
 
 # production
 /build
-
+@
 # misc
 .DS_Store
 *.pem
@@ -35,3 +37,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+#qa Env
+#.env
