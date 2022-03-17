@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
-import prisma from '@/prisma';
+//import prisma from '@/prisma';
+import { sqlConfig } from '@/utilis/sqlConfig';
+import sql from 'mssql';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -32,11 +34,23 @@ const withToken = (handler: any) => {
 		try {
 			//Verifica si el token es valido
 			//Verifica si el usuario existe
+			/*
 			const currentUser = await prisma.user.findUnique({
 				where: {
 					id: Number(decoded.sub),
 				},
 			});
+			*/
+
+			await sql.connect(sqlConfig);
+
+			console.log('connection midd With token ok');
+
+			const response: any = await sql.query`
+			SELECT * FROM [User] WHERE id = ${Number(decoded.sub)}
+		`;
+			const currentUser = response.recordset[0];
+
 			if (!currentUser) {
 				return res.status(401).json({
 					success: false,

@@ -34,14 +34,17 @@ export const AuthContextProvider = ({ children }: Props) => {
 
 	const getDataUser = async () => {
 		//console.log('calling useAuth');
+		console.log('bug');
 		try {
 			const res = await useAxios.get('/api/auth/user/getUser');
 			const { user, token }: { user: User; token: string } = res.data;
+			console.log('bug ok');
 			//localStorage.setItem('token', token);
 			setCookies('token', token);
 			setUser(user);
 			//localStorage.setItem('na', user.numAfiliado);
 		} catch (error: any) {
+			console.log('bug erro');
 			//console.log('remove Token', error?.response);
 			setUser(null);
 			validSession(error);

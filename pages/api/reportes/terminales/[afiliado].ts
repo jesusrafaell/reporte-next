@@ -3,24 +3,9 @@ import withToken from '@/middleware/api/withToken';
 import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
+import { sqlConfig } from '@/utilis/sqlConfig';
 
 import { Terminal } from '@/interfaces/reportes/reporte';
-
-const { serverRuntimeConfig } = getConfig();
-
-const { host, dbName, username, password } = serverRuntimeConfig;
-
-const sqlConfig: any = {
-	server: host,
-	database: dbName,
-	user: username,
-	password: password,
-	options: {
-		encrypt: true,
-		trustServerCertificate: true,
-		//change to true for local dev / self-signed certs
-	},
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const afiliado = req.query.afiliado;
@@ -29,7 +14,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		console.log('connect ok afiliado');
 		await sql.connect(sqlConfig);
 		//console.log('conection ok');
-		const response: Terminal[] | [] = await prisma.$queryRawUnsafe(`
+
+		console.log(Number(afiliado));
+
+		const response: any = await sql.query`
 			SELECT * FROM OPENQUERY([PRUEBA_7218], '
 				SELECT DISTINCT
 					card_acceptor_term_id AS terminal,
@@ -42,11 +30,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						LEFT(right(source_node_additional_data, 19), 9) AS Serial_Equipo
 						FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
 					WHERE  
-						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = ${Number(afiliado)}
+						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = '${Number(afiliado)}'
 				) AS a
 				GROUP BY card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo
 			')
-		`);
+		`;
+		console.log(response);
+		/*
 
 		//let terminales = response.recordset;
 		if (!response.length) throw { message: 'No se encontro ningun terminal', code: 401 };
@@ -54,6 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		setTimeout(() => {
 			return res.status(200).json({ terminales: response });
 		}, 2000);
+		*/
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);
