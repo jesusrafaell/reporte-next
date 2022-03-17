@@ -4,6 +4,7 @@
 	"scripts": {
 		"now:dev": "now dev",
 		"dev": "next -p 3005",
+		"dev:u": "sudo kill -9 $(sudo lsof -t -i:3005)",
 		"build": "next build",
 		"start": "next start -p 3005",
 		"migration:preData": "node prisma/db/index.ts",
