@@ -7,11 +7,7 @@
 		"dev:u": "sudo kill -9 $(sudo lsof -t -i:3005)",
 		"build": "next build",
 		"start": "next start -p 3005",
-		"migration:preData": "node prisma/db/index.ts",
-		"typeorm": "ts-node ./node_modules/typeorm/cli.js",
-		"migrate:run": "yarn typeorm migration:run",
-		"reset:init": "yarn typeorm schema:drop; rm -rf db/migrations/*; yarn db:migrate:create init; yarn db:migrate:run",
-		"migration:create": "yarn typeorm migration:generate -- -n"
+		"migration:preData": "node prisma/db/index.ts"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.7.1",

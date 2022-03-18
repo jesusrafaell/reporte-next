@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 //import prisma from '@/prisma';
 import createToken from '@/utilis/createToken';
-import { PrismaClient } from '@prisma/client';
 
 import sql from 'mssql';
 import { sqlConfig } from '@/utilis/sqlConfig';
@@ -14,8 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		//return res.status(400).json({ message: 'Metodo invalido en Tranred' });
 		return res.redirect(302, '/');
 	}
-
-	const prisma = new PrismaClient();
 
 	try {
 		await sql.connect(sqlConfig);
@@ -39,8 +36,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const { password, id, contactId, ...dataUser } = user;
 
-		console.log('run');
-
 		const responseContact: any = await sql.query`
 			SELECT 
 				[Contact].email,
@@ -54,8 +49,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				ON [Afiliado].contactId = [Contact].id
 			WHERE [Contact].id = ${contactId} 
 		`;
-
-		console.log('contact', responseContact.recordset);
 
 		const contact = responseContact.recordset[0];
 

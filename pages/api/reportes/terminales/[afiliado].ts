@@ -5,19 +5,14 @@ import getConfig from 'next/config';
 import sql from 'mssql';
 import { sqlConfig } from '@/utilis/sqlConfig';
 
-import { Terminal } from '@/interfaces/reportes/reporte';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const afiliado = req.query.afiliado;
 	if (!afiliado) return res.status(400).json({ message: 'Es necesario un numero de afiliado', code: 400 });
 	try {
-		console.log('connect ok afiliado');
 		await sql.connect(sqlConfig);
-		//console.log('conection ok');
+		console.log('connect ok afiliado');
 
-		console.log(Number(afiliado));
-
-		const response: any = await sql.query`
+		const query = `
 			SELECT * FROM OPENQUERY([PRUEBA_7218], '
 				SELECT DISTINCT
 					card_acceptor_term_id AS terminal,
@@ -30,21 +25,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						LEFT(right(source_node_additional_data, 19), 9) AS Serial_Equipo
 						FROM [tm_trans_base].[dbo].[tm_trans] (NOLOCK)
 					WHERE  
-						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = '${Number(afiliado)}'
+						card_acceptor_name_loc  IS NOT NULL AND card_acceptor_id_code = ${afiliado}
 				) AS a
 				GROUP BY card_acceptor_term_id ,card_acceptor_id_code ,card_acceptor_name_loc, Serial_Equipo
 			')
 		`;
-		console.log(response);
-		/*
+		const response: any = await sql.query(query);
 
-		//let terminales = response.recordset;
-		if (!response.length) throw { message: 'No se encontro ningun terminal', code: 401 };
+		let terminales = response.recordset;
 
-		setTimeout(() => {
-			return res.status(200).json({ terminales: response });
-		}, 2000);
-		*/
+		if (!terminales.length) throw { message: 'No se encontro ningun terminal', code: 401 };
+
+		return res.status(200).json({ terminales });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

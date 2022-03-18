@@ -45,7 +45,7 @@ async function getTrans(data: DataQuery) {
 		const terminal = JSON.stringify(data);
 		const res = await useAxios.get(`/api/reportes/transaction/${terminal}`);
 		//console.log('repote', res.data);
-		return res.data.terminales;
+		return res.data.transacciones;
 	} catch (err: any) {
 		console.log(err.response);
 		const data = err.response?.data;

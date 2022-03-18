@@ -3,24 +3,11 @@ import withToken from '@/middleware/api/withToken';
 import prisma from '@/prisma';
 import getConfig from 'next/config';
 import sql from 'mssql';
-
-import { Terminal, Transaction } from '@/interfaces/reportes/reporte';
+import { sqlConfig } from '@/utilis/sqlConfig';
 
 const { serverRuntimeConfig } = getConfig();
 
 const { host, dbName, username, password } = serverRuntimeConfig;
-
-const sqlConfig: any = {
-	server: host,
-	database: dbName,
-	user: username,
-	password: password,
-	options: {
-		encrypt: true,
-		trustServerCertificate: true,
-		//change to true for local dev / self-signed certs
-	},
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!req.query.terminal) {
@@ -40,11 +27,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	try {
 		await sql.connect(sqlConfig);
-
 		console.log('conection ok terminales');
-		//console.log(fechaInicio, fechaFin);
 
-		const response: Transaction[] | [] = await prisma.$queryRawUnsafe(`
+		const query = `
       SELECT * FROM OPENQUERY([PRUEBA_7218], '
         SELECT 
           right(card_acceptor_id_code, 9) as afiliado, 
@@ -68,16 +53,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             in_rev between ''${fechaInicio} 00:00:00.000'' and ''${fechaFin} 00:00:00.000'' or
             in_recon_adv between ''${fechaInicio} 00:00:00.000'' and ''${fechaFin} 00:00:00.000'')
           ORDER BY tran_nr
-      ');
-		`);
+      ')
+		`;
+
+		const response: any = await sql.query(query);
 		//console.log('res ok');
 
-		//let terminales = response.recordset;
-		if (!response.length) throw { message: 'No se encontro ninguna transaccion', code: 400 };
+		let transacciones = response.recordset;
 
-		setTimeout(() => {
-			return res.status(200).json({ terminales: response });
-		}, 2000);
+		if (!transacciones.length) throw { message: 'No se encontro ninguna transaccion', code: 400 };
+
+		return res.status(200).json({ transacciones });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json(err);

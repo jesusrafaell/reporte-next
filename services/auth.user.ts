@@ -36,8 +36,8 @@ async function register(user: UserInt) {
 		const data = err.response?.data;
 		const resError = {
 			type: 'Error',
-			message: data.message || 'Error: Api',
-			code: data.code || err.response.status || '400',
+			message: data?.message || 'Error: Api',
+			code: data?.code || err?.response?.status || '400',
 		};
 		console.log(resError);
 		return resError;
