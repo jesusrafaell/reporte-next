@@ -1,11 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { NextApiRequest, NextApiResponse } from 'next';
-import bcrypt from 'bcryptjs';
 //import prisma from '@/prisma';
 import createToken from '@/utilis/createToken';
-
-import sql from 'mssql';
 import { sqlConfig } from '@/utilis/sqlConfig';
+import bcrypt from 'bcryptjs';
+import sql from 'mssql';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	//const { query } = req.body as { query: string };
