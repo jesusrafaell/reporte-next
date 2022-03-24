@@ -111,9 +111,3 @@ export default function Login() {
 		</Layout>
 	);
 }
-
-export const getServerSideProps = withNotAuth(async (ctx: any) => {
-	return {
-		props: {},
-	};
-});

@@ -17,4 +17,12 @@ module.exports = {
 		backUrl: process.env.BACK_URL,
 		backPort: process.env.BACK_PORT,
 	},
+	exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+		return {
+			'/': { page: '/' },
+			'/auth/login': { page: '/auth/login' },
+			'/auth/register': { page: '/auth/register' },
+			'/reportes/afiliado': { page: '/reportes/afiliado' },
+		};
+	},
 };

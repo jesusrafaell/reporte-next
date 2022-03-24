@@ -14,6 +14,7 @@ import { AuthContextProvider } from '@/stores/authContext';
 export const cache = createCache({ key: 'css', prepend: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
+	/*
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
@@ -21,20 +22,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 			jssStyles.parentElement?.removeChild(jssStyles);
 		}
 	}, []);
+	*/
 
 	return (
-		<CacheProvider value={cache}>
+		<>
 			<Head>
 				<title>Reportes Next</title>
 				<link rel='shortcut icon' href='/icon.png' />
-				{/*<link rel='manifest' href='/manifest.json' /> */}
 			</Head>
 			<ThemeProvider theme={theme}>
 				<AuthContextProvider>
 					<Component {...pageProps} />;
 				</AuthContextProvider>
 			</ThemeProvider>
-		</CacheProvider>
+		</>
 	);
 }
 

@@ -11,7 +11,8 @@ export const reporte = {
 
 async function getTerminals(na: string) {
 	try {
-		const res = await useAxios.get(`/api/reportes/terminales/${na}`);
+		console.log('call:', na);
+		const res = await useAxios.get(`/reportes/terminales/${na}`);
 		//console.log('repote', res.data);
 		return res.data.terminales;
 	} catch (err: any) {
@@ -24,8 +25,8 @@ async function getTerminals(na: string) {
 		if (err.response?.message) {
 			const resError = {
 				type: 'Error',
-				message: data.message || 'Error: Api',
-				code: data.code || err.response.status || '400',
+				message: data?.message || 'Error: Api',
+				code: data?.code || err?.response?.status || '400',
 			};
 			console.log(resError);
 			return resError;
@@ -43,7 +44,7 @@ interface DataQuery {
 async function getTrans(data: DataQuery) {
 	try {
 		const terminal = JSON.stringify(data);
-		const res = await useAxios.get(`/api/reportes/transaction/${terminal}`);
+		const res = await useAxios.get(`/reportes/transaction/${terminal}`);
 		//console.log('repote', res.data);
 		return res.data.transacciones;
 	} catch (err: any) {
@@ -55,8 +56,8 @@ async function getTrans(data: DataQuery) {
 
 		const resError = {
 			type: 'Error',
-			message: data.message || 'Error: Api',
-			code: data.code || err.response.status || '400',
+			message: data?.message || 'Error: Api',
+			code: data?.code || err?.response?.status || '400',
 		};
 		console.log(resError);
 		return resError;

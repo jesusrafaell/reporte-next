@@ -13,7 +13,7 @@ export const authUser = {
 
 async function login(user: UserLoginInt) {
 	try {
-		const res: AxiosResponse<any> = await useAxios.post('/api/auth/authenticate', user);
+		const res: AxiosResponse<any> = await useAxios.post('/auth/login', user);
 		//console.log(res.data.user);
 		setCookies('token', res.data.token);
 		//localStorage.setItem('token', res.data.token);
@@ -27,7 +27,7 @@ async function login(user: UserLoginInt) {
 
 async function register(user: UserInt) {
 	try {
-		const res: AxiosResponse<any> = await useAxios.post('/api/auth/register', user);
+		const res: AxiosResponse<any> = await useAxios.post('/auth/register', user);
 		//console.log('Register ok', res);
 		Router.push('/auth/login');
 		successRegister();

@@ -200,9 +200,3 @@ export default function Register() {
 		</Layout>
 	);
 }
-
-export const getServerSideProps = withNotAuth(async (ctx: any) => {
-	return {
-		props: {},
-	};
-});
